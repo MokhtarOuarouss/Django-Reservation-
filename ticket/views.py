@@ -26,11 +26,11 @@ def signup(request):
 
         # Vérification de la validité des données
         if password != password1:
-            return redirect('signup/')
+            return redirect('ticket:signup')
         if not nom or not prenom or not email or not password or not password1:
-            return redirect('signup/')
+            return redirect('ticket:signup/')
         if User.objects.filter(email=email):
-            return redirect('signup/')
+            return redirect('ticket:signup')
         # Rediriger l'utilisateur vers une page de confirmation
         else:
             utilisateur = User.objects.create_user(username=email, email=email, password=password,
@@ -39,7 +39,7 @@ def signup(request):
             user = authenticate(request, username=email, password=password)
             login(request, user)
             utilisateur.save()
-            return redirect('Organizer')
+            return redirect('ticket:Organizer')
     return render(request, 'Inscription.html')
 
 def signin(request):
@@ -50,11 +50,11 @@ def signin(request):
         if user is not None and user.is_active:
             login(request, user)
             if user.is_client:
-                return redirect('Client')
+                return redirect('ticket:Client')
             elif user.is_organizer:
-                return redirect('Organizer')
+                return redirect('ticket:Organizer')
             else:
-                return redirect('admin')
+                return redirect('ticket:admin')
     return render(request, 'Login.html')
 @login_required
 def Logout(request):
