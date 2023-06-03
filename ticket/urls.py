@@ -11,6 +11,10 @@ urlpatterns = [
     path('signup', views.signup, name='signup'),
     path('signin/', views.signin, name='signin'),
     path('profil/', views.Profil, name='profil'),
-   # path('<slug:slug>/', views.post_detail, name='post_detail'),
+    path('Organizer', views.espace_organizer, name='Organizer'),
+    path('Client', views.espace_client, name='Client'),
+    path('admin', views.espace_admin, name='admin'),
+
+    # path('<slug:slug>/', views.post_detail, name='post_detail'),
    # path('Events', views.Event_List, name='event_list')
 ]

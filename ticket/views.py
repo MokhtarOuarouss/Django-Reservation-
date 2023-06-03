@@ -26,11 +26,11 @@ def signup(request):
 
         # Vérification de la validité des données
         if password != password1:
-            pass
+            return redirect('signup/')
         if not nom or not prenom or not email or not password or not password1:
-            pass
+            return redirect('signup/')
         if User.objects.filter(email=email):
-            pass
+            return redirect('signup/')
         # Rediriger l'utilisateur vers une page de confirmation
         else:
             utilisateur = User.objects.create_user(username=email, email=email, password=password,
@@ -39,24 +39,28 @@ def signup(request):
             user = authenticate(request, username=email, password=password)
             login(request, user)
             utilisateur.save()
-
+            return redirect('Organizer')
     return render(request, 'Inscription.html')
 
 def signin(request):
     if request.method == 'POST':
-        username = request.POST['username']
+        email = request.POST.get('email')
         password = request.POST['password']
-        user = authenticate(request, username=username, password=password)
+        user = authenticate(request, username=email, password=password)
         if user is not None and user.is_active:
             login(request, user)
-            pass
-        else:
-            pass
+            if user.is_client:
+                return redirect('Client')
+            elif user.is_organizer:
+                return redirect('Organizer')
+            else:
+                return redirect('admin')
     return render(request, 'Login.html')
 @login_required
 def Logout(request):
     logout(request)
-    pass
+    return redirect('signin')
+
 
 @login_required
 def update(request):
@@ -65,3 +69,12 @@ def update(request):
 def delete(request):
     pass
 
+"""Organizer"""
+def espace_organizer(request):
+    return render(request, 'Organizer/index.html')
+"""Clients """
+def espace_client(request):
+    return render(request, 'Clients/index.html')
+"""Admin"""
+def espace_admin(request):
+    return render(request, 'Admin/index.html')
