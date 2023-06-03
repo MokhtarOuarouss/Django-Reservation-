@@ -1,0 +1,55 @@
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/navbar.css' %}" >
+
+<div class="navbar">
+    <a href="">Logo</a>
+
+    <a href="">etudiant</a>
+    <a href="">Fromulaire</a>
+    <a href="">Enseignant</a>
+
+    {% if user.is_authenticated %}
+          <div class="dropdown">
+                      <a href=""></a>
+                      <a href="">
+                            <div class="logo-image">
+                                  {% load static %}
+                                  <img src="" class="img-fluid" width="35" height="35">
+                             </div>
+                      </a>
+                      <a href="">Logout</a>
+
+
+          </div>
+                <div class="menu-btn">
+                    <i class="fas fa-bars"></i>
+                </div>
+    {% else %}
+          <div class="dropdown">
+                <button class="dropbtn">Se connecter
+                     <i class="fa fa-caret-down"></i>
+                </button>
+                <div class="dropdown-content">
+                      <a href="">s'inscrire</a>
+                      <a href="">Authentification</a>
+                </div>
+          </div>
+    {% endif %}
+
+</div>
+
+
+
+
+
+    {% block content %}
+    <!-- Content Goes here -->
+    {% endblock %}
+
+    <!-- Footer -->
+
+    <!-- bootstrap scripts -->
+
+</body>
+
+</html>
