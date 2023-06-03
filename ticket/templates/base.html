@@ -30,8 +30,8 @@
                      <i class="fa fa-caret-down"></i>
                 </button>
                 <div class="dropdown-content">
-                      <a href="">s'inscrire</a>
-                      <a href="">Authentification</a>
+                      <a href="{% url 'ticket:signup'%}" >s'inscrire</a>
+                      <a href="{% url 'ticket:signin'%}">Authentification</a>
                 </div>
           </div>
     {% endif %}

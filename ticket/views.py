@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render,redirect
 from django.contrib.auth import authenticate, login, logout, get_user_model
 from pyexpat.errors import messages
@@ -11,7 +12,7 @@ def Event_List(request):
     #context={'Events':Event.objects.all()}
     return render(request,'Events.html')
 
-def Inscription(request):
+def signup(request):
     if request.method == 'POST':
         nom = request.POST.get('Nom')
         prenom = request.POST.get('Prenom')
@@ -35,17 +36,28 @@ def Inscription(request):
             login(request, user)
             utilisateur.save()
 
-    pass
+    return render(request, 'Inscription.html')
 
-def connexion(request):
+def signin(request):
     if request.method == 'POST':
         username = request.POST['username']
         password = request.POST['password']
         user = authenticate(request, username=username, password=password)
         if user is not None and user.is_active:
             login(request, user)
-            messages.success(request, 'Bienvenu')
-            return redirect('Etudiant')
+            pass
         else:
-            messages.error(request, "erreur d'authentification")
-    return render(request, 'Etudiant/Login.html')
+            pass
+    return render(request, 'Login.html')
+@login_required
+def Logout(request):
+    logout(request)
+    pass
+
+@login_required
+def update(request):
+    pass
+@login_required
+def delete(request):
+    pass
+

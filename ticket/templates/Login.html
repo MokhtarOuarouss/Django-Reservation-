@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/Etudiant/Login.css' %}">
+<style>
+  .Err{
+    color: red;
+    padding-left:25%;
+    font-family: bold;
+    padding-top: 5px;
+    padding-bottom: 5px;
+  }
+</style>
+  <h2 ></h2><br><br>
+  <form method="post" >
+    <h2 class="connuser">Connexion d'utilisateur</h2>
+    {% csrf_token %}
+    <!--{{ form.as_p }} -->
+      <label>Email:</label>
+        <input type="email" id="email" name="email" >
+
+        <label>Mot de passe:</label>
+        <input type="password" id="password" name="password" >
+
+        <p class="Err">{{ err }}</p>
+
+        <button type="submit">Se connecter</button>
+        <div class="liens" ><br>
+          <p>créer votre compte ?<a   aria-current="page" href="{% url 'ticket:signup'%}">S'inscrire</a></p>
+        </div>
+  </form>
+{% endblock %}
