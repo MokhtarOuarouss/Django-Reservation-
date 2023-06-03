@@ -10,7 +10,7 @@ urlpatterns = [
     #path('contact', views.contact_form, name='f_contact'),
     path('signup', views.signup, name='signup'),
     path('signin/', views.signin, name='signin'),
-    #path('profil/', views.Profil, name='signup'),
+    path('profil/', views.Profil, name='profil'),
    # path('<slug:slug>/', views.post_detail, name='post_detail'),
    # path('Events', views.Event_List, name='event_list')
 ]

@@ -12,6 +12,10 @@ def Event_List(request):
     context={'Events':Event.objects.all()}
     return render(request,'Events.html',context)
 
+def Profil(request):
+    context={'Events':Event.objects.all()}
+    return render(request,'profil.html',context)
+
 def signup(request):
     if request.method == 'POST':
         nom = request.POST.get('Nom')
