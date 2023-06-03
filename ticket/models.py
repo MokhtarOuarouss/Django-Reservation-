@@ -29,7 +29,7 @@ class Organizer(models.Model):
     created = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-       return "Organizer Name : "+self.name
+       return "Organizer Name : "+self.user.first_name
    
 
 
