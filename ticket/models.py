@@ -3,14 +3,15 @@ from django.contrib.auth.models import AbstractUser, User
 
 # Create your models here.
 
+
 class User(AbstractUser):
     is_client = models.BooleanField(default=True)
     is_organizer = models.BooleanField(default=False)
     is_administrateur = models.BooleanField(default=False)
+
+
 class Client(models.Model):
-    name = models.CharField(max_length=100,default="")
-    email = models.EmailField(unique=True)
-    password = models.CharField(max_length=128)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, blank=True, null=True)
     image = models.ImageField(upload_to='Client_images',null=True,blank=True)
     phone_number = models.CharField(max_length=20,null=True,blank=True)
     address = models.CharField(max_length=200,null=True,blank=True)
@@ -18,9 +19,7 @@ class Client(models.Model):
     created = models.DateTimeField(auto_now_add=True)
 
 class Organizer(models.Model):
-    name = models.CharField(max_length=100,default="")
-    email = models.EmailField(unique=True)
-    password = models.CharField(max_length=128)
+    user = models.OneToOneField(User,on_delete=models.CASCADE,blank=True,null=True)
     image = models.ImageField(upload_to='Organizer_images',null=True,blank=True)
     phone_number = models.CharField(max_length=20,null=True,blank=True)
     company_name = models.CharField(max_length=100,null=True,blank=True)
@@ -32,7 +31,9 @@ class Organizer(models.Model):
     def __str__(self):
        return "Organizer Name : "+self.name
    
-     
+
+
+
 class Event(models.Model):
     title = models.CharField(max_length=100)
     description = models.TextField()
