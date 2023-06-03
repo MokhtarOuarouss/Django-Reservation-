@@ -9,11 +9,17 @@ def index(request):
     return render(request,'index.html')
 
 def Event_List(request):
-    context={'Events':Event.objects.all()}
-    return render(request,'Events.html',context)
+    user = request.user
+    org = Organizer.objects.get(user=user)
+    client = Client.objects.get(user=user)
+    context = {'Events': Event.objects.all(),'org': org,'client': client}
+    return render(request, 'Events.html', context)
 
 def Profil(request):
-    context={'Events':Event.objects.all()}
+    user = request.user
+    org = Organizer.objects.get(user=user)
+    client = Client.objects.get(user=user)
+    context={'Events':Event.objects.all(),'org': org,'client': client}
     return render(request,'profil.html',context)
 
 def signup(request):
@@ -61,7 +67,6 @@ def Logout(request):
     logout(request)
     return redirect('signin')
 
-
 @login_required
 def update(request):
     pass
@@ -71,10 +76,28 @@ def delete(request):
 
 """Organizer"""
 def espace_organizer(request):
-    return render(request, 'Organizer/index.html')
+    user = request.user
+    org = Organizer.objects.get(user=user)
+    client = Organizer.objects.get(user=user)
+    admin = Organizer.objects.get(user=user)
+    return render(request, 'Organizer/index.html',{'org': org,'client': client, 'admin': admin})
 """Clients """
 def espace_client(request):
-    return render(request, 'Clients/index.html')
+    user = request.user
+    org = Organizer.objects.get(user=user)
+    client = Organizer.objects.get(user=user)
+    admin = Organizer.objects.get(user=user)
+    return render(request, 'Clients/index.html',{'org': org,'client': client, 'admin': admin})
 """Admin"""
 def espace_admin(request):
-    return render(request, 'Admin/index.html')
+    user = request.user
+    org = Organizer.objects.get(user=user)
+    client = Organizer.objects.get(user=user)
+    admin = Organizer.objects.get(user=user)
+    return render(request, 'Admin/index.html', {'org': org,'client': client, 'admin': admin})
+def base(request):
+    user = request.user
+    org = Organizer.objects.get(user=user)
+    client = Organizer.objects.get(user=user)
+    admin = Organizer.objects.get(user=user)
+    return render(request, 'base.html', {'org': org,'client': client, 'admin': admin})

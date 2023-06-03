@@ -72,12 +72,26 @@
                         <li class="nav-item text-black">
                             <a class="nav-link text-black font-weight-bold" href="#">About</a>
                         </li>
+                        {% if user.is_authenticated %}
+                        <li class="nav-item text-black">
+                            <a class="nav-link text-black font-weight-bold"  data-toggle="modal" data-target="#login">{{org.user.first_name}} {{org.user.last_name}}</a>
+                        </li>
+                         <li class="nav-item text-black">
+                            <a class="nav-link text-black font-weight-bold" href="{% url 'ticket:Logout' %}" >Log out</a>
+                        </li>
+                        <li class="nav-item text-black">
+                            <div class="logo-image">
+                                <img src="{{org.image.url}}" class="rounded-circle" alt="Bootstrap" width="45" height="45"></a>
+                             </div>
+                        </li>
+                        {% else %}
                         <li class="nav-item text-black">
                             <a class="nav-link text-black font-weight-bold"  data-toggle="modal" data-target="#login">Log in</a>
                         </li>
                         <li class="nav-item text-black">
                             <a class="nav-link text-black font-weight-bold"  data-toggle="modal" data-target="#singup">Sign up</a>
                         </li>
+                        {% endif %}
                     </ul>
                 </div>
             </div>
@@ -93,7 +107,7 @@
                         <div class="modal-header">
                             <h3 class="modal-title fs-5">Sign In</h3>
                         </div>
-                        <form method="POST" action="">
+                        <form method="POST" action="{% url 'ticket:signup' %}">
                             {% csrf_token %}
                             <div class="mb-3">
                                 <label for="name" class="col-form-label">First Name:</label>
@@ -133,15 +147,15 @@
                         <div class="modal-header">
                             <h3 class="modal-title fs-5">Log In</h3>
                         </div>
-                        <form method="post">
+                        <form method="POST" action="{% url 'ticket:signin' %}">
                             {% csrf_token %}
                             <div class="mb-3">
                                 <label for="name" class="col-form-label">Email:</label>
-                                <input type="text" class="form-control" id="name" name="email" >
+                                <input type="email" class="form-control" id="name" name="email" >
                             </div>
                             <div class="mb-3">
                                 <label for="email" class="col-form-label">Password:</label>
-                                <input type="email" class="form-control" id="email" name="password" >
+                                <input type="password" class="form-control" id="email" name="password" >
                             </div>
 
                             <div class="modal-footer">

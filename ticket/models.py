@@ -18,6 +18,8 @@ class Client(models.Model):
     update = models.DateTimeField(auto_now=True)
     created = models.DateTimeField(auto_now_add=True)
 
+    objects = models.Manager()
+
 class Organizer(models.Model):
     user = models.OneToOneField(User,on_delete=models.CASCADE,blank=True,null=True)
     image = models.ImageField(upload_to='Organizer_images',null=True,blank=True)
@@ -27,6 +29,8 @@ class Organizer(models.Model):
     website = models.URLField(blank=True,null=True)
     update = models.DateTimeField(auto_now=True)
     created = models.DateTimeField(auto_now_add=True)
+
+    objects = models.Manager()
 
     def __str__(self):
        return "Organizer Name : "+self.user.first_name
@@ -47,6 +51,8 @@ class Event(models.Model):
     second_class_price = models.DecimalField(max_digits=8, decimal_places=2)
     third_class_price = models.DecimalField(max_digits=8, decimal_places=2)
 
+    objects = models.Manager()
+
     def __str__(self):
        return "Event Title : "+self.title
     
@@ -54,3 +60,5 @@ class Reservation(models.Model):
     event = models.ForeignKey(Event, on_delete=models.CASCADE)
     organizer = models.ForeignKey(Organizer, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField()
+
+    objects = models.Manager()
