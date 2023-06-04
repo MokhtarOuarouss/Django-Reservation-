@@ -15,6 +15,7 @@ def Event_List(request):
     context = {'Events': Event.objects.all()}
     return render(request, 'Events.html', context)
 
+@login_required(login_url="/signin")
 def Profil(request):
 
     context={'Events':Event.objects.all()}
@@ -43,9 +44,18 @@ def signup(request):
                                                    last_name=nom)
             user = authenticate(request, username=email, password=password)
             login(request, user)
-
-            utilisateur.save()
-            return redirect('ticket:Organizer')
+            if type == 'organizer':
+                user.is_organizer = True
+                organizer = Organizer.objects.create(user=user)
+                organizer.save()
+                utilisateur.save()
+                return redirect('ticket:profil/')
+            elif type == 'client':
+                user.is_client = True
+                client = Client.objects.create(user=user)
+                client.save()
+                utilisateur.save()
+                return redirect('ticket:Client')
     return render(request, 'Inscription.html')
 
 def signin(request):
@@ -58,32 +68,35 @@ def signin(request):
             if user.is_client:
                 return redirect('ticket:Client')
             elif user.is_organizer:
-                return redirect('ticket:Organizer')
+                return redirect('ticket:profil')
             else:
                 return redirect('ticket:admin')
     return render(request, 'Login.html')
-@login_required
+@login_required(login_url="/signin")
 def Logout(request):
     logout(request)
-    return redirect('signin')
+    return redirect('ticket:signin')
 
-@login_required
+@login_required(login_url="/signin")
 def update(request):
     pass
-@login_required
+@login_required(login_url="/signin")
 def delete(request):
     pass
 
 """Organizer"""
+@login_required(login_url="/signin")
 def espace_organizer(request):
     user = request.user
     org = Organizer.objects.filter(user=user).first()
     return render(request, 'Organizer/index.html', {'org': org})
 """Clients """
+@login_required(login_url="/signin")
 def espace_client(request):
 
     return render(request, 'Clients/index.html')
 """Admin"""
+@login_required(login_url="/signin")
 def espace_admin(request):
 
     return render(request, 'Admin/index.html')

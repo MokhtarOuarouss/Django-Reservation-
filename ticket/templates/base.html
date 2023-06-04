@@ -1,10 +1,6 @@
 {% load static %}
 
 <html>
-
-
-
-
     <head>
         <title>Django Central</title>
         <link rel="stylesheet" href="{% static 'css/base.css' %}">
@@ -120,6 +116,13 @@
                                 <input type="email" class="form-control" id="email" name="Email" >
                             </div>
                             <div class="mb-3">
+                                <label for="validationServer9" class="col-form-label">Type:</label>
+                                <select class="form-control" aria-label="Default select example" id="validationServer9" name="type">
+                                  <option value="organizer">Organizer</option>
+                                  <option value="client">Client</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
                                 <label for="password" class="col-form-label"> Password :</label>
                                 <input type="password" class="form-control" id="password" name="password">
                             </div>
@@ -127,6 +130,7 @@
                                 <label for="password" class="col-form-label"> Conferm Password :</label>
                                 <input type="password" class="form-control" id="password" name="password1">
                             </div>
+
 
                             <div class="modal-footer">
                                 <button type="submit" class="btn btn-primary">Submit</button>
