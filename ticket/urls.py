@@ -13,8 +13,13 @@ urlpatterns = [
     path('profil/', views.Profil, name='profil'),
     path('Organizer', views.espace_organizer, name='Organizer'),
     path('Client', views.espace_client, name='Client'),
-    path('admin', views.espace_admin, name='admin'),
+    path('a_admin', views.espace_admin, name='a_admin'),
     path('Logout',views.Logout, name="Logout"),
+    path('profil/updateProfil', views.updateProfil, name='updateprofil'),
+    path('profil/AddEvents', views.AddEvents, name='AddEvents'),
+    path('profil/updateImageProfil', views.updateImageProfil, name='updateImageProfil'),
+    path('profil/UpdateEvents/<int:id>', views.UpdateEvents, name='UpdateEvents'),
+    path('profil/DeleteEvent/<int:id>', views.DeleteEvent, name='DeleteEvent'),
     # path('<slug:slug>/', views.post_detail, name='post_detail'),
    # path('Events', views.Event_List, name='event_list')
 ]

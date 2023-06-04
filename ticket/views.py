@@ -17,9 +17,11 @@ def Event_List(request):
 
 @login_required(login_url="/signin")
 def Profil(request):
-
-    context={'Events':Event.objects.all()}
-    return render(request,'profil.html',context)
+    user = request.user
+    organizer = Organizer.objects.filter(user=user).first()
+    events = Event.objects.filter(organizer=organizer)
+    context = {'organizer': organizer, 'Events': events}
+    return render(request, 'profil.html', context)
 
 def signup(request):
     if request.method == 'POST':
@@ -86,6 +88,119 @@ def delete(request):
 
 """Organizer"""
 @login_required(login_url="/signin")
+def updateProfil(request):
+    if request.method == 'POST':
+        user = request.user
+        firstname = request.POST.get('first_name')
+        lastname = request.POST.get('last_name')
+        email = request.POST.get('email')
+        phoneNumber = request.POST.get('phone_number')
+        company = request.POST.get('company_name')
+        address = request.POST.get('address')
+        website = request.POST.get('website')
+
+        organizer = Organizer.objects.filter(user=user).first()
+        user.first_name = firstname
+        user.last_name = lastname
+        user.email = email
+        organizer.phone_number = phoneNumber
+        organizer.address = address
+        organizer.website = website
+        organizer.company_name = company
+
+        user.save()
+        organizer.save()
+
+        return redirect("ticket:profil")
+
+def updateImageProfil(request):
+    if request.method == 'POST':
+        image = request.FILES.get('image')
+        user = request.user
+        organizer = Organizer.objects.filter(user=user).first()
+
+        if image:
+            organizer.image = image
+            organizer.save()
+
+    return redirect("ticket:profil")
+
+@login_required(login_url="/signin")
+def AddEvents(request):
+    if request.method == 'POST':
+        user = request.user
+        title = request.POST.get('title')
+        date_string = request.POST.get('date')
+        location = request.POST.get('location')
+        type = request.POST.get('type')
+        firstprice = request.POST.get('firstprice')
+        secondprice = request.POST.get('secondprice')
+        thirsprice = request.POST.get('thirsprice')
+        description = request.POST.get('description')
+        
+        date, time = date_string.split('T')
+        organizer = Organizer.objects.filter(user=user).first()
+        image =request.FILES.get('image')
+        #event = Event.objects.filter(organizer=organizer).first()
+
+
+        event = Event.objects.create(title=title,
+                                     date=date,
+                                     time=time,
+                                     location=location,
+                                     type= type,
+                                     first_class_price=firstprice,
+                                     second_class_price=secondprice,
+                                     third_class_price=thirsprice,
+                                     description=description,
+                                     image= image,
+                                     organizer=organizer)
+
+        
+        event.save()
+
+        return redirect("ticket:profil")
+
+def UpdateEvents(request,id):
+    if request.method == 'POST':
+        user = request.user
+        event = Event.objects.get(id=id)
+        title = request.POST.get('title')
+        date_string = request.POST.get('date')
+        location = request.POST.get('location')
+        type = request.POST.get('type')
+        firstprice = request.POST.get('firstprice')
+        secondprice = request.POST.get('secondprice')
+        thirsprice = request.POST.get('thirsprice')
+        description = request.POST.get('description')
+        
+        date, time = date_string.split('T')
+        image =request.FILES.get('image')
+        #event = Event.objects.filter(organizer=organizer).first()
+
+
+        event.title=title
+        event.date=date
+        event.time=time
+        event.location=location
+        event.type= type
+        event.first_class_price=firstprice
+        event.second_class_price=secondprice
+        event.third_class_price=thirsprice
+        event.description=description
+
+        image = request.FILES.get('image')
+        if image:
+        # Process the uploaded file
+            event.image= image
+
+        event.save()
+        return redirect('ticket:profil')
+        
+def DeleteEvent(request,id):
+    event = Event.objects.get(id=id)
+    event.delete()
+    return redirect('ticket:profil')        
 def espace_organizer(request):
     user = request.user
     org = Organizer.objects.filter(user=user).first()

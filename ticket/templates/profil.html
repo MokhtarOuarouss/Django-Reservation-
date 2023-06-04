@@ -1,6 +1,11 @@
 {%extends "base.html" %}
 {% load static %}
+<meta name='viewport' content='width=device-width, initial-scale=1'>
 
+<script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 {% block content %}
 
 <div class="container emp-profile">
@@ -8,8 +13,14 @@
       <div class="row">
           <div class="col-md-4">
               <div class="profile-img">
-                  <img src="{% static 'umsra_logo.png' %}" />
-                  
+                  <img src="{{ organizer.image.url }}" />
+                  <form method="post" action='updateImageProfil' >
+                    {% csrf_token %}
+                    <div style="margin-top:5%" class="file btn btn-lg btn-primary">
+                      Change Photo
+                      <input type="file" name="image" >
+                    </div>
+                  </form>
               </div>
           </div>
           <div class="col-md-6">
@@ -37,59 +48,90 @@
           <div class="col-md-4">
               
           </div>
-          <div class="col-md-6">
+          <div class="col-md-8">
               <div class="tab-content profile-tab" id="myTabContent">
                   <div class="tab-pane fade show active" id="Informations" role="tabpanel" aria-labelledby="home-tab">
                       <div class="row">
-                          <div class="col-md-6">
+                          <div class="col-md-5">
                               <label>Name</label>
                           </div>
-                          <div class="col-md-6">
-                              <p>Organizer name</p>
+                          <div class="col-md-5">
+                              <p>{{ organizer.user.first_name }} {{ organizer.user.last_name }}</p>
                           </div>
                       </div>
                       <div class="row">
-                          <div class="col-md-6">
+                          <div class="col-md-5">
                               <label>Email</label>
                           </div>
-                          <div class="col-md-6">
-                              <p>email@gmail.com</p>
+                          <div class="col-md-5">
+                              <p>{{ organizer.user.email }}</p>
                           </div>
                       </div>
                       <div class="row">
-                          <div class="col-md-6">
+                          <div class="col-md-5">
                               <label>Phone</label>
                           </div>
-                          <div class="col-md-6">
-                              <p>060000000</p>
+                          <div class="col-md-5">
+                              <p>{{ organizer.phone_number }}</p>
                           </div>
                       </div>
                       <div class="row">
-                          <div class="col-md-6">
+                          <div class="col-md-5">
                               <label>Address</label>
                           </div>
-                          <div class="col-md-6">
-                              <p>Address</p>
+                          <div class="col-md-5">
+                              <p>{{ organizer.address }}</p>
                           </div>
                       </div>
                       <div class="row">
-                          <div class="col-md-6">
+                          <div class="col-md-5">
                               <label>Website</label>
                           </div>
-                          <div class="col-md-6">
-                              <a href="www.website.com">www.website.com</a>
+                          <div class="col-md-5">
+                              <a href="www.website.com">{{ organizer.website }}</a>
                           </div>
                       </div>
                   </div>
+
+
+                  
                   <div class="tab-pane fade" id="Events" role="tabpanel" aria-labelledby="profile-tab">
+                    <div class="row row-cols-auto">
+                        <div class="col">
+                            <p>Title</p>
+                        </div>
+                        <div class="col">
+                          <p>Date</p>
+                        </div>
+                        <div class="col">
+                        <p>Time</p>
+                        </div>
+                        <div class="col">
+                            <p>Location</p>
+                        </div>
+                        <div class="col">
+                        <p>Action</p>
+                        </div>
+                    </div>
                       {% for event in Events %}
-                      <div class="row">
-                          <div class="col-md-6">
+                      <div style='border-top:solid 1px silver; padding:6px' class="row row-cols-auto">
+                          <div class="col">
                               <label>{{event.title}}</label>
                           </div>
-                          <div class="col-md-6">
-                              <p>{{event.date}}</p>
+                          <div class="col">
+                            <label>{{event.date}}</label>
                           </div>
+                          <div class="col">
+                          <label>{{event.time}}</label>
+                          </div>
+                          <div class="col">
+                              <label>{{event.location}}</label>
+                          </div>
+                          <div class="col">
+                            <a href=""  data-toggle="modal" data-target="#{{event.id}}" style="color: green;" ><i class='fas fa-edit' style='color:red'></i>Edit</a>
+                            <a href="{% url 'ticket:DeleteEvent' id=event.id %}" style="color: #fb1313;" onclick="return confirm('Are you sure you want to delete this event?')">Delete</a>
+                          </div>
+                          
                       </div>
                       {% endfor %}
                   </div>
@@ -110,19 +152,19 @@
           <h3 class="modal-title fs-5">Edit Profile</h3>
         </div>
         <div class="modal-body">
-          <form method="POST" action="">
+          <form method="POST" action="updateprofil">
             {% csrf_token %}
             <div class="mb-3">
-              <label for="name" class="col-form-label">Name:</label>
-              <input type="text" class="form-control" id="name" name="name" value="{{ organizer.name }}">
+              <label for="name" class="col-form-label">First Name:</label>
+              <input type="text" class="form-control" id="name" name="first_name" value="{{ organizer.user.first_name }}">
+            </div>
+            <div class="mb-3">
+              <label for="name" class="col-form-label">Last Name:</label>
+              <input type="text" class="form-control" id="name" name="last_name" value="{{ organizer.user.last_name }}">
             </div>
             <div class="mb-3">
               <label for="email" class="col-form-label">Email:</label>
-              <input type="email" class="form-control" id="email" name="email" value="{{ organizer.email }}">
-            </div>
-            <div class="mb-3">
-              <label for="password" class="col-form-label">Password:</label>
-              <input type="password" class="form-control" id="password" name="password">
+              <input type="email" class="form-control" id="email" name="email" value="{{ organizer.user.email }}" disabled >
             </div>
             <div class="mb-3">
               <label for="phone_number" class="col-form-label">Phone Number:</label>
@@ -150,14 +192,16 @@
   </div>
   <div class="modal fade" id="AddEvent" role="dialog">
     <div class="modal-dialog">
-    
+
+
+<!-- Model for Add Event-->    
       <!-- Modal content-->
       <div class="modal-content">
         <div class="modal-header">
-          <h3 class="modal-title fs-5">Edit Profile</h3>
+          <h3 class="modal-title fs-5">Add Event</h3>
         </div>
         <div class="modal-body">
-          <form method="POST" action="">
+          <form method="POST" action="AddEvents">
             {% csrf_token %}
             <div class="mb-3">
               <label for="title" class="col-form-label">Title:</label>
@@ -196,7 +240,7 @@
             </div>
             <div class="mb-3">
               <label for="description" class="col-form-label">Description:</label>
-              <input type="textarea" class="form-control" id="address" name="description">
+              <textarea  style="width:100% ; heigth : 300%" class="form-control" id="address" name="description"></textarea>
             </div>
             <div class="modal-footer">
               <button type="submit" class="btn btn-primary">Submit</button>
@@ -206,5 +250,74 @@
       </div>
     </div>
   </div>
+
+  
+
+<!-- Model for Edit Event-->
+{% for event in Events %}
+  <div class="modal fade" id="{{event.id}}" role="dialog">
+    <div class="modal-dialog">
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 class="modal-title fs-5">Edit Event</h3>
+        </div>
+        <div class="modal-body">
+          <form method="POST" action="UpdateEvents/{{event.id}}" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="mb-3">
+              <label for="title" class="col-form-label">Title:</label>
+              <input type="text" class="form-control" id="name" name="title" >
+            </div>
+
+            <div class="mb-3">
+              <label for="date" class="col-form-label">Date :</label>
+              <input type="datetime-local" class="form-control" id="email" name="date" >
+            </div>
+
+            <div class="mb-3">
+              <label for="location" class="col-form-label">Location :</label>
+              <input type="location" class="form-control" id="password" name="location">
+            </div>
+            <div class="mb-3">
+              <label for="type" class="col-form-label">Type :</label>
+              <input type="text" class="form-control" id="phone_number" name="type" >
+            </div>
+            <div class="mb-3">
+              <label for="image" class="col-form-label">Image  :</label>
+              <input type="file" class="form-control" id="company_name" name="image" >
+            </div>
+            
+            <div class="mb-3">
+              <label for="price" class="col-form-label">First Price:</label>
+              <input type="number" class="form-control" id="website" min=0 name="firstprice">
+            </div>
+            <div class="mb-3">
+              <label for="price" class="col-form-label">Second Price:</label>
+              <input type="number" class="form-control" id="website" min=0  name="secondprice">
+            </div>
+            <div class="mb-3">
+              <label for="price" class="col-form-label">Third Price:</label>
+              <input type="number" class="form-control" id="website" min=0  name="thirsprice">
+            </div>
+            <div class="mb-3">
+              <label for="description" class="col-form-label">Description:</label>
+              <textarea  style="width:100% ; heigth : 300%" class="form-control" id="address" name="description"></textarea>
+            </div>
+            <div class="modal-footer">
+              <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endfor %}
+
+  <script>
+    function submitForm() {
+      document.getElementById('imageForm').submit();
+    }
+  </script>
 
 {%endblock%}
