@@ -14,13 +14,13 @@
 </style>
   <h2 ></h2><br><br>
   <form method="post" >
-    <h2 class="connuser">Connexion d'utilisateur</h2>
+    <h2 class="connuser">Log In</h2>
     {% csrf_token %}
     <!--{{ form.as_p }} -->
       <label>Email:</label>
         <input type="email" id="email" name="email" >
 
-        <label>Mot de passe:</label>
+        <label>Password</label>
         <input type="password" id="password" name="password" >
 
         <p class="Err">{{ err }}</p>

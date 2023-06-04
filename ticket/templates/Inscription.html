@@ -2,15 +2,7 @@
 
 {% block content %}
 {% load static %}
-<style>
-  .Err{
-    color: red;
-    padding-left:25%;
-    font-family: bold;
-    padding-top: 5px;
-    padding-bottom: 5px;
-  }
-</style>
+
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
      <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
@@ -20,32 +12,28 @@
     <h2></h2><br>
     <form method="post" action="" id="form" class=" needs-validation"  enctype="multipart/form-data" novalidate >
         {% csrf_token %}
-        <h2 class="signupuser">Inscription d'étudiant</h2>
+        <h2 class="signupuser">Sign In</h2>
         <!--{{ form.as_p }}-->
 
-        <label for="validationServer01" >Nom:</label>
+        <label for="validationServer01" >First Name:</label>
         <input type="text" class="form-control" id="validationServer01" name="Nom" required>
-        <div class="Err">{{ nomErr }}</div>
-        <p class="Err">{{ nomErr }}</p>
+        
 
-        <label for="validationServer02">Prenom:</label>
+        <label for="validationServer02">Second Name:</label>
         <input type="text" class="form-control" id="validationServer02" name="Prenom" required>
-        <div class="Err">{{ nomErr }}</div>
-        <p class="Err">{{ nomErr }}</p>
+        
 
         <label for="validationServer03">Email:</label>
         <input type="email" class="form-control" id="validationServer03" name="Email" required>
-        <p class="Err">{{ errEm }}</p>
+        
 
-        <label for="validationServer04">Mot de passe:</label>
+        <label for="validationServer04">Password:</label>
         <input type="password" class="form-control" id="validationServer04" name="password" required>
-        <p class="Err"></p>
 
-        <label for="validationServer05">Confirmer le mot de passe:</label>
+        <label for="validationServer05">Conferm Password:</label>
         <input type="password" class="form-control" id="validationServer05" name="password1" required>
-        <p class="Err">{{ passErr }}</p>
 
-        <button type="submit">S'inscrire</button>
+        <button type="submit">Sign In</button>
     </form>
 
 
@@ -73,123 +61,5 @@
 
 </script>
 {% endblock %}
-<!--
 
-            {% if messages %}
-                <ul class="messages">
-                    {% for message in messages %}
-                        <li >{% if message.tags %}
-                            class="{{ message.tags }}"
-                            <script>
-                                const inputs = document.querySelectorAll('input');
-
-                                inputs.forEach(input => {
-                                    input.addEventListener('input', () => {
-                                        if (input.value === '') {
-                                            input.style.border = '2px solid #ee0707';
-                                        } else {
-                                            input.style.border = '1px solid ';
-                                        }
-                                    });
-                                });
-                            </script>
-                            {% endif %}>{{ message }}
-                        </li>
-                    {% endfor %}
-                </ul>
-             {% endif %}
--->
-
-<!--
-    <script>
-
-          const form = document.querySelector('form');
-          const nom = document.getElementById('nom');
-          const prenom = document.getElementById('prenom');
-          const email = document.getElementById('email');
-          const motDePasse = document.getElementById('password');
-          const motDePasseConfirmation = document.getElementById('password2');
-
-          function validateForm() {
-            let isValid = true;
-            let message = "Ce champ est obligatoires."
-            // Vérifier si les champs sont vides
-            if (nom.value === '') {
-              nom.style.borderColor = 'red';
-              const inputContol = nom.parentElement;
-              const errorDisplay = inputControl.querySelector('.Err');
-               errorDisplay.innerText = message;
-              inputContol.classList.add('Err');
-              isValid = false;
-            } else {
-              nom.style.borderColor = '';
-            }
-
-            if (prenom.value === '') {
-              prenom.style.border = 'red 2px' ;
-              const inputContol = prenom.parentElement;
-              const errorDisplay = inputControl.querySelector('.Err');
-              errorDisplay.innerText = message;
-              inputContol.classList.add('Err');
-              isValid = false;
-            } else {
-              prenom.style.borderColor = '';
-            }
-
-            if (email.value === '') {
-              email.style.borderColor = 'red';
-              const inputContol = email.parentElement;
-              const errorDisplay = inputControl.querySelector('.Err');
-              errorDisplay.innerText = message;
-              inputContol.classList.add('Err');
-              isValid = false;
-            } else {
-              email.style.borderColor = '';
-            }
-
-            if (motDePasse.value === '') {
-              motDePasse.style.border = 'red 2px' ;
-              isValid = false;
-            } else {
-              motDePasse.style.borderColor = '';
-            }
-
-            if (motDePasseConfirmation.value === '') {
-              motDePasseConfirmation.style.border = 'red 2px' ;
-              isValid = false;
-            } else {
-              motDePasseConfirmation.style.borderColor = '';
-            }
-
-            // Vérifier si les mots de passe correspondent
-            if (motDePasse.value !== motDePasseConfirmation.value) {
-              motDePasse.style.border = 'red 2px' ;
-              motDePasseConfirmation.style.border = 'red 2px';
-              isValid = false;
-            }
-
-            return isValid;
-          }
-
-          form.addEventListener('submit', function(event) {
-            if (!validateForm()) {
-              event.preventDefault();
-            }
-          });
-
-    </script>
-<script>
-    const inputs = document.querySelectorAll('input');
-
-    inputs.forEach(input => {
-        input.addEventListener('input', () => {
-            if (input.value === '') {
-                input.style.backgroundColor = 'red';
-            } else {
-                input.style.backgroundColor = 'white';
-            }
-        });
-    });
-</script>
--->
 

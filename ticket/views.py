@@ -9,14 +9,15 @@ def index(request):
     return render(request,'index.html')
 
 def Event_List(request):
+
+    #user = request.user
+    #org = Organizer.objects.filter(user=user).first()
     context = {'Events': Event.objects.all()}
     return render(request, 'Events.html', context)
 
 def Profil(request):
-    user = request.user
-    org = Organizer.objects.get(user=user)
-    client = Client.objects.get(user=user)
-    context={'Events':Event.objects.all(),'org': org,'client': client}
+
+    context={'Events':Event.objects.all()}
     return render(request,'profil.html',context)
 
 def signup(request):
@@ -26,6 +27,7 @@ def signup(request):
         email = request.POST.get('Email')
         password = request.POST.get('password')
         password1 = request.POST.get('password1')
+        type = request.POST.get('type')
 
         # Vérification de la validité des données
         if password != password1:
@@ -41,6 +43,7 @@ def signup(request):
                                                    last_name=nom)
             user = authenticate(request, username=email, password=password)
             login(request, user)
+
             utilisateur.save()
             return redirect('ticket:Organizer')
     return render(request, 'Inscription.html')
@@ -74,27 +77,16 @@ def delete(request):
 """Organizer"""
 def espace_organizer(request):
     user = request.user
-    org = Organizer.objects.get(user=user)
-    client = Organizer.objects.get(user=user)
-    admin = Organizer.objects.get(user=user)
-    return render(request, 'Organizer/index.html',{'org': org,'client': client, 'admin': admin})
+    org = Organizer.objects.filter(user=user).first()
+    return render(request, 'Organizer/index.html', {'org': org})
 """Clients """
 def espace_client(request):
-    user = request.user
-    org = Organizer.objects.get(user=user)
-    client = Organizer.objects.get(user=user)
-    admin = Organizer.objects.get(user=user)
-    return render(request, 'Clients/index.html',{'org': org,'client': client, 'admin': admin})
+
+    return render(request, 'Clients/index.html')
 """Admin"""
 def espace_admin(request):
-    user = request.user
-    org = Organizer.objects.get(user=user)
-    client = Organizer.objects.get(user=user)
-    admin = Organizer.objects.get(user=user)
-    return render(request, 'Admin/index.html', {'org': org,'client': client, 'admin': admin})
+
+    return render(request, 'Admin/index.html')
 def base(request):
-    user = request.user
-    org = Organizer.objects.get(user=user)
-    client = Organizer.objects.get(user=user)
-    admin = Organizer.objects.get(user=user)
-    return render(request, 'base.html', {'org': org,'client': client, 'admin': admin})
+
+    return render(request, 'base.html')

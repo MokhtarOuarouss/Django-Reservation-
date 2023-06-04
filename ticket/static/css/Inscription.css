@@ -1,64 +1,67 @@
 form {
-  max-width: 600px;
-  margin:  auto;
-  padding: 30px;
-  background-color: #ffffff;
-  border: #ee0707 solid;
-  border-radius: 10px;
-  box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.4);
+    max-width: 600px;
+    margin: auto;
+    padding: 30px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.4);
+}
 
+p {
+    color: #dc1010;
+    padding-left: 25px;
+    font-size: 14px;
+    display: inline;
 }
-p{
-  color: #dc1010;
-  padding-left: 25px;
-  font-size:14px;
-  display: inline;
-}
+
 form .signupuser {
-  text-align: center;
-  margin-bottom: 20px;
+    text-align: center;
+    margin-bottom: 20px;
 }
+
 form label {
-  display: block;
-  font-weight: bold;
-  margin-top: 10px;
-  margin-bottom: 5px;
+    display: block;
+    font-weight: bold;
+    margin-top: 10px;
+    margin-bottom: 5px;
 }
+
 form input[type="text"],
 form input[type="email"],
 form input[type="password"] {
-  display: block;
-  width: 100%;
-  padding: 8px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  margin-bottom: 10px;
-  font-size: 16px;
-  font-family: Arial, sans-serif;
+    display: block;
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    font-size: 16px;
+    font-family: Arial, sans-serif;
 }
 
 form button[type="submit"] {
-   background-color: #4CAF50;
-  color: white;
-  padding: 10px ;
-  border: none;
-  width: 100%;
-  border-radius: 5px;
-  font-size: 16px;
-  font-weight: bold;
-  cursor: pointer;
-  display:block ;
-  margin-top: 20px;
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px;
+    border: none;
+    width: 100%;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    display: block;
+    margin-top: 20px;
 }
 
-button[type="submit"]{
-  width: 100%;
-  border: none;
-  margin-top: 25px;
-  background-color: #4CAF50;
-  color: white;
-  cursor: pointer;
+button[type="submit"] {
+    width: 100%;
+    border: none;
+    margin-top: 25px;
+    background-color: #4CAF50;
+    color: white;
+    cursor: pointer;
 }
+
 form button[type="submit"]:hover {
-  background-color: #3e8e41;
+    background-color: #3e8e41;
 }
