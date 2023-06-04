@@ -9,10 +9,7 @@ def index(request):
     return render(request,'index.html')
 
 def Event_List(request):
-    user = request.user
-    org = Organizer.objects.get(user=user)
-    client = Client.objects.get(user=user)
-    context = {'Events': Event.objects.all(),'org': org,'client': client}
+    context = {'Events': Event.objects.all()}
     return render(request, 'Events.html', context)
 
 def Profil(request):
