@@ -1,0 +1,240 @@
+{%extends "base.html" %}
+{% load static %}
+<meta name='viewport' content='width=device-width, initial-scale=1'>
+
+
+<link rel="stylesheet" href="{% static 'css/eventInfo.css' %}">
+
+
+{% block content %}
+
+
+<div class="container">
+    <div class="main-body">
+        <!-- Breadcrumb -->
+        <br>
+        <!-- /Breadcrumb -->
+        <div class="row gutters-sm">
+            <div class="col-md-4 mb-3">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex flex-column align-items-center text-center">
+                            <img style="width:150px;height:200px" src="{{ Organizer.image.url }}" />
+                            <div class="mt-5">
+                                <h4>{{ Organizer.user.first_name }} {{ Organizer.user.last_name }}</h4>
+                                <p class="text-secondary mb-1">{{ Organizer.company_name }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <h6 class="mb-0">Full Name</h6>
+                            </div>
+                            <div class="col-sm-9 text-secondary">
+                                {{ Organizer.user.first_name }} {{ Organizer.user.last_name }}
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <h6 class="mb-0">Email</h6>
+                            </div>
+                            <div class="col-sm-9 text-secondary">
+                                {{ Organizer.user.email }} 
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <h6 class="mb-0">Phone</h6>
+                            </div>
+                            <div class="col-sm-9 text-secondary">
+                                {{ Organizer.phone_number }}
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <h6 class="mb-0">Company</h6>
+                            </div>
+                            <div class="col-sm-9 text-secondary">
+                                {{ Organizer.company_name }}
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <h6 class="mb-0">Address</h6>
+                            </div>
+                            <div class="col-sm-9 text-secondary">
+                                {{ Organizer.address }}
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <h6 class="mb-0">Website</h6>
+                            </div>
+                            <div class="col-sm-9 text-secondary">
+                                <a></a>
+                                <a href="https://www.google.com" ><p>{{ Organizer.website }}</p></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+        <!-- Start -->
+        {% for event in Events %}
+        <div class="col-sm-6 col-md-4 col-lg-3 mt-4">
+            <div class="card">
+                <img class="card-img-top" id="imEvent" src="{{ event.image.url }}">
+                <div class="card-block">
+                    <figure class="profile">
+                        <img src="{{ event.organizer.image.url }}" class="profile-avatar" alt="">
+                    </figure>
+                    <a href="#" style="color: bla"><p>{{ event.organizer.company_name }}</p></a>
+                    <h4 class="card-title">{{ event.title }}</h4>
+                    <div class="meta">
+                        <a>{{ event.date }} | {{ event.time }}</a>
+                    </div>
+                    <div class="meta">
+                        <a>in <b>{{ event.location }}</b></a>
+                    </div>
+                    <div class="card-text">{{ event.description }}</div>
+                </div>
+                <div class="card-footer tab-card-header">
+                    <ul class="nav nav-tabs card-header-tabs" id="myTab" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link" id="one-tab" data-toggle="tab" href="#{{ event.id }}" role="tab"
+                                aria-controls="One" aria-selected="true">Gold </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="two-tab" data-toggle="tab" href="#{{ event.id }}+1" role="tab"
+                                aria-controls="Two" aria-selected="false">Silver</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="three-tab" data-toggle="tab" href="#{{ event.id }}+2" role="tab"
+                                aria-controls="Three" aria-selected="false">Copper</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="tab-content" id="myTabContent">
+                    <div class="tab-pane fade show active p-3" id="{{ event.id }}" role="tabpanel"
+                        aria-labelledby="one-tab" style="background-color: gold">
+                        <h5 class="card-title">{{ event.first_class_price }} DH</h5>
+                        <a href="#" class="btn btn-primary">Add to cart</a>
+                    </div>
+                    <div class="tab-pane fade p-3" id="{{ event.id }}+1" role="tabpanel" aria-labelledby="two-tab"
+                        style="background-color: silver">
+                        <h5 class="card-title">{{ event.second_class_price }} DH</h5>
+                        <a href="#" class="btn btn-primary">Add to cart</a>
+                    </div>
+                    <div class="tab-pane fade p-3" id="{{ event.id }}+2" role="tabpanel" aria-labelledby="three-tab"
+                        style="background-color: white">
+                        <h5 class="card-title">{{ event.third_class_price }} DH</h5>
+                        <a href="#" class="btn btn-primary">Add to cart</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+        <!-- End -->
+    </div>
+</div>
+
+
+<!--<div class="container emp-profile">
+  <form method="post">
+      <div class="row">
+          <div class="col-md-4">
+              <div class="profile-img">
+                  <img src="{{ Organizer.image.url }}" />
+              </div>
+          </div>
+          <div class="col-md-5">
+              <div class="profile-head">
+                  <h5>Organizer name</h5>
+                  <h6>Company name</h6>
+                  <p class="proile-rating">RANKINGS: <span>8/10</span></p>
+                  <ul class="nav nav-tabs" id="myTab" role="tablist">
+                      <li class="nav-item">
+                          <a class="nav-link active" id="home-tab" data-toggle="tab" href="#Informations" role="tab" aria-controls="home" aria-selected="true">Informations</a>
+                      </li>
+                      <li class="nav-item">
+                          <a class="nav-link" id="profile-tab" data-toggle="tab" href="#Events" role="tab" aria-controls="profile" aria-selected="false">Events</a>
+                      </li>
+                  </ul>
+              </div>
+          </div>
+      </div>
+      <div class="row">
+          <div class="col-md-4">
+              
+          </div>
+          <div class="col-md-8">
+              <div class="tab-content profile-tab" id="myTabContent">
+                  <div class="tab-pane fade show active" id="Informations" role="tabpanel" aria-labelledby="home-tab">
+                      <div class="row">
+                          <div class="col-md-5">
+                              <label>Name</label>
+                          </div>
+                          <div class="col-md-5">
+                              <p>{{ Organizer.user.first_name }} {{ Organizer.user.last_name }}</p>
+                          </div>
+                      </div>
+                      <div class="row">
+                          <div class="col-md-5">
+                              <label>Email</label>
+                          </div>
+                          <div class="col-md-5">
+                              <p>{{ Organizer.user.email }}</p>
+                          </div>
+                      </div>
+                      <div class="row">
+                          <div class="col-md-5">
+                              <label>Phone</label>
+                          </div>
+                          <div class="col-md-5">
+                              <p>{{ Organizer.phone_number }}</p>
+                          </div>
+                      </div>
+                      <div class="row">
+                          <div class="col-md-5">
+                              <label>Address</label>
+                          </div>
+                          <div class="col-md-5">
+                              <p>{{ Organizer.address }}</p>
+                          </div>
+                      </div>
+                      <div class="row">
+                          <div class="col-md-5">
+                              <label>Website</label>
+                          </div>
+                          <div class="col-md-5">
+                              <a href="www.website.com">{{ Organizer.website }}</a>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </form>
+</div>-->
+
+
+
+
+
+
+{%endblock%}

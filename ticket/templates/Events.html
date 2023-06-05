@@ -21,7 +21,7 @@
                         <img src="{{event.organizer.image.url}}" class="profile-avatar" alt="">
                         
                     </figure>
-                    <a href="#" style="color:bla"><p>{{event.organizer.company_name}}</p></a>
+                    <a href="{% url 'ticket:OrganizerInfo' id=event.organizer.id %}" style="color:bla"><p>{{event.organizer.company_name}}</p></a>
                     <h4 class="card-title">{{ event.title }}</h4>
                     <div class="meta">
                         <a>{{ event.date }} | {{ event.time }}</a>

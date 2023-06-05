@@ -196,7 +196,7 @@ def UpdateEvents(request,id):
         event.save()
         return redirect('ticket:profil')
         
-def DeleteEvent(request,id):
+def DeleteEvent(id):
     event = Event.objects.get(id=id)
     event.delete()
     return redirect('ticket:profil')
@@ -206,7 +206,13 @@ def Event_List_organizer(request):
     events = Event.objects.filter(organizer=organizer)
     context = {'Events': events}
     return render(request, 'EventByErg.html', context)
-        
+def OrganizerInfo(request, id):
+    organizer = Organizer.objects.get(id=id)
+    events = Event.objects.filter(organizer=organizer)
+    context = {'Organizer': organizer, 'Events': events}
+
+    return render(request, 'OrganizerInfo.html', context)
+
 def espace_organizer(request):
     user = request.user
     org = Organizer.objects.filter(user=user).first()
