@@ -9,18 +9,10 @@ def index(request):
     return render(request,'index.html')
 
 def Event_List(request):
-    if request.method == 'POST' :
-        query = request.GET.get('search')  # Get the search query from the request
-        if query:
-            Events = Event.objects.filter(title__icontains=query)  # Perform the search using the 'icontains' lookup
-        else:
-            Events = Event.objects.none()
-    else :
-        Events = Event.objects.all()
-    context = {'Events': Events}
+    context = {'Events': Event.objects.all()}
     return render(request, 'Events.html', context)
 
-def search(request):
+def Search(request):
     query = request.GET.get('search')  # Get the search query from the request
 
     if query:
@@ -28,7 +20,7 @@ def search(request):
     else:
         results = Event.objects.none()  # Empty queryset when no search query is provided
 
-    return render(request, 'Events.html', {'results': results, 'query': query})
+    return render(request, 'Events.html', {'Events': results, 'query': query})
 
 @login_required(login_url="/signin")
 def Profil(request):

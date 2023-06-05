@@ -23,6 +23,7 @@ urlpatterns = [
     path('profil/Events', views.Event_List_organizer, name='Event_List_organizer'),
     path('organizer/OrganizerInfo/<int:id>', views.OrganizerInfo, name='OrganizerInfo'),
     path('organizer/EventrInfo/<int:id>', views.EventrInfo, name='EventrInfo'),
+    path('/Search', views.Search, name='Search'),
     # path('<slug:slug>/', views.post_detail, name='post_detail'),
    # path('Events', views.Event_List, name='event_list')
 ]

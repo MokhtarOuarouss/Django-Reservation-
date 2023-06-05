@@ -18,7 +18,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-            [17:46, 05/06/2023] +212 624-929941: <script>
+        <script>
                 window.onscroll = function() {myFunction()};
       
                 var navbar = document.getElementById("mainNav");
@@ -111,7 +111,7 @@
                 <div class="collapse navbar-collapse" id="navbarResponsive">
                     <ul class="navbar-nav ml-auto">
 
-                        <form class="search-container" action="event_list" method="post">
+                        <form class="search-container" action="{% url 'ticket:Search'  %}" method="GET">
                             <input type="text" placeholder="Search.." name="search">
                             <button type="submit"><i class="fa fa-search"></i></button>
                         </form>
@@ -218,7 +218,7 @@
                 </div>
             </div>
         </div>
-        <br><br>
+        <br><br><br>
 
 
 
