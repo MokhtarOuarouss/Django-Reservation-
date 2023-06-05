@@ -98,21 +98,24 @@
         {% for event in Events %}
         <div class="col-sm-6 col-md-4 col-lg-3 mt-4">
             <div class="card">
-                <img class="card-img-top" id="imEvent" src="{{ event.image.url }}">
-                <div class="card-block">
-                    <figure class="profile">
-                        <img src="{{ event.organizer.image.url }}" class="profile-avatar" alt="">
-                    </figure>
-                    <a href="#" style="color: bla"><p>{{ event.organizer.company_name }}</p></a>
-                    <h4 class="card-title">{{ event.title }}</h4>
-                    <div class="meta">
-                        <a>{{ event.date }} | {{ event.time }}</a>
+                <img class="card-img-top" id ="imEvent" src="{{event.image.url}}">                    
+                  <div class="card-block" >
+                      <figure class="profile">
+                          <img src="{{event.organizer.image.url}}" class="profile-avatar" alt="">
+                      </figure>
+                      <a href="{% url 'ticket:OrganizerInfo' id=event.organizer.id %}" style="color:bla"><p style='margin-bottom: 0;'>{{event.organizer.company_name}}</p></a>
+                      <h4 class="card-title">{{ event.title }}</h4>
+                      <div class="meta">
+                          <a>{{ event.date }} | {{ event.time }}</a>
+                      </div>
+                      <div class="meta">
+                          <a>in <b>{{ event.location }}</b> </a>
+                      </div>
+                      <div class="meta">
+                        <div class="card-text"><a href="{% url 'ticket:EventrInfo' id=event.id %}">see more .... </a></div>
+                        
                     </div>
-                    <div class="meta">
-                        <a>in <b>{{ event.location }}</b></a>
-                    </div>
-                    <div class="card-text">{{ event.description }}</div>
-                </div>
+                  </div>
                 <div class="card-footer tab-card-header">
                     <ul class="nav nav-tabs card-header-tabs" id="myTab" role="tablist">
                         <li class="nav-item">

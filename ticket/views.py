@@ -9,11 +9,26 @@ def index(request):
     return render(request,'index.html')
 
 def Event_List(request):
-
-    #user = request.user
-    #org = Organizer.objects.filter(user=user).first()
-    context = {'Events': Event.objects.all()}
+    if request.method == 'POST' :
+        query = request.GET.get('search')  # Get the search query from the request
+        if query:
+            Events = Event.objects.filter(title__icontains=query)  # Perform the search using the 'icontains' lookup
+        else:
+            Events = Event.objects.none()
+    else :
+        Events = Event.objects.all()
+    context = {'Events': Events}
     return render(request, 'Events.html', context)
+
+def search(request):
+    query = request.GET.get('search')  # Get the search query from the request
+
+    if query:
+        results = Event.objects.filter(title__icontains=query)  # Perform the search using the 'icontains' lookup
+    else:
+        results = Event.objects.none()  # Empty queryset when no search query is provided
+
+    return render(request, 'Events.html', {'results': results, 'query': query})
 
 @login_required(login_url="/signin")
 def Profil(request):
@@ -220,6 +235,8 @@ def espace_organizer(request):
     user = request.user
     org = Organizer.objects.filter(user=user).first()
     return render(request, 'Organizer/index.html', {'org': org})
+
+
 """Clients """
 @login_required(login_url="/signin")
 def espace_client(request):
