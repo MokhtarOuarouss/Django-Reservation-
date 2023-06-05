@@ -20,6 +20,7 @@ urlpatterns = [
     path('profil/updateImageProfil', views.updateImageProfil, name='updateImageProfil'),
     path('profil/UpdateEvents/<int:id>', views.UpdateEvents, name='UpdateEvents'),
     path('profil/DeleteEvent/<int:id>', views.DeleteEvent, name='DeleteEvent'),
+    path('profil/Events', views.Event_List_organizer, name='Event_List_organizer'),
     # path('<slug:slug>/', views.post_detail, name='post_detail'),
    # path('Events', views.Event_List, name='event_list')
 ]

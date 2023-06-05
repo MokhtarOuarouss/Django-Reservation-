@@ -190,17 +190,23 @@ def UpdateEvents(request,id):
         event.description=description
 
         image = request.FILES.get('image')
-        if image:
-        # Process the uploaded file
-            event.image= image
-
+        if image is not None:
+            # Process the uploaded file
+            event.image = image
         event.save()
         return redirect('ticket:profil')
         
 def DeleteEvent(request,id):
     event = Event.objects.get(id=id)
     event.delete()
-    return redirect('ticket:profil')        
+    return redirect('ticket:profil')
+def Event_List_organizer(request):
+    user = request.user
+    organizer = Organizer.objects.filter(user=user).first()
+    events = Event.objects.filter(organizer=organizer)
+    context = {'Events': events}
+    return render(request, 'EventByErg.html', context)
+        
 def espace_organizer(request):
     user = request.user
     org = Organizer.objects.filter(user=user).first()

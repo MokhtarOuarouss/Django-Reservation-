@@ -1,0 +1,125 @@
+{%extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+
+<div class="container">
+  
+  
+	<div class="row">
+    
+
+    
+    <!--start-->
+    {% for event in Events %}
+<div class="col-sm-6 col-md-4 col-lg-3 mt-4" >
+            <div class="card">
+              <img class="card-img-top" id ="imEvent" src="{{event.image.url}}">                    
+                <div class="card-block">
+                    <figure class="profile">
+                        <img src="{{event.organizer.image.url}}" class="profile-avatar" alt="">
+                        
+                    </figure>
+                    <a href="#" style="color:bla"><p>{{event.organizer.company_name}}</p></a>
+                    <h4 class="card-title">{{ event.title }}</h4>
+                    <div class="meta">
+                        <a>{{ event.date }} | {{ event.time }}</a>
+                    </div>
+                    <div class="meta">
+                        <a>in <b>{{ event.location }}</b> </a>
+                    </div>
+                    <div class="card-text">{{event.description}}</div>
+                </div>
+                 <!--<div class="card-footer">
+                    <small>Last updated 3 mins ago</small>
+                    <button class="btn btn-secondary float-right btn-sm">show</button>
+                </div>-->
+                <div class="card-footer tab-card-header ">
+                  <ul class="nav nav-tabs card-header-tabs" id="myTab" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link" id="one-tab" data-toggle="tab" href="" role="tab" aria-controls="One" aria-selected="true">{{event.first_class_price}} </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="one-tab" data-toggle="tab" href="" role="tab" aria-controls="One" aria-selected="true">{{event.first_class_price}} </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="one-tab" data-toggle="tab" href="" role="tab" aria-controls="One" aria-selected="true">{{event.first_class_price}} </a>
+                    </li>
+                  </ul>
+                </div>
+                
+                <div class="tab-content" id="myTabContent" >
+                  <div class="tab-pane fade show active p-3" id="" role="tabpanel" aria-labelledby="one-tab"style="background-color: gold">
+                    <a href="{{event.id}}"  style="padding:3% 10% 3%" class="btn btn-info"  data-toggle="modal" data-target="#{{event.id}}">Edit</a>
+                    <a href="{% url 'ticket:DeleteEvent' id=event.id %}" style="padding:3% 10% 3%;margin-left:8%"class="btn btn-danger"  onclick="return confirm('Are you sure you want to delete this event?')">Delete</a>               
+                  </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+        <!--End-->     
+</div>
+</div>
+{% for event in Events %}
+  <div class="modal fade" id="{{event.id}}" role="dialog">
+    <div class="modal-dialog">
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 class="modal-title fs-5">Edit Event</h3>
+        </div>
+        <div class="modal-body">
+          <form method="POST" action="UpdateEvents/{{event.id}}" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="mb-3">
+              <label for="title" class="col-form-label">Title:</label>
+              <input type="text" class="form-control" id="name" name="title" value="{{event.title}}">
+            </div>
+
+            <div class="mb-3">
+              <label for="date" class="col-form-label">Date :</label>
+              <input type="datetime-local" class="form-control" id="email" name="date" value="{{event.date}} {{ event.time }}" >
+            </div>
+
+            <div class="mb-3">
+              <label for="location" class="col-form-label">Location :</label>
+              <input type="location" class="form-control" id="password" name="location" value="{{event.location}}">
+            </div>
+            <div class="mb-3">
+              <label for="type" class="col-form-label">Type :</label>
+              <input type="text" class="form-control" id="phone_number" name="type" value="{{event.type}}" >
+            </div>
+            <div class="mb-3">
+              <label for="image" class="col-form-label">Image  :</label>
+              <input type="file" class="form-control" id="company_name" name="image" value="{{event.image}}">
+            </div>
+            
+            <div class="mb-3">
+              <label for="price" class="col-form-label">First Price:</label>
+              <input type="number" class="form-control" id="website" min=0 name="firstprice" value="{{event.first_class_price}}">
+            </div>
+            <div class="mb-3">
+              <label for="price" class="col-form-label">Second Price:</label>
+              <input type="number" class="form-control" id="website" min=0  name="secondprice" value="{{event.second_class_price}}">
+            </div>
+            <div class="mb-3">
+              <label for="price" class="col-form-label">Third Price:</label>
+              <input type="number" class="form-control" id="website" min=0  name="thirsprice" value="{{event.third_class_price}}">
+            </div>
+            <div class="mb-3">
+              <label for="description" class="col-form-label">Description:</label>
+              <textarea  style="width:100% ; heigth : 300%" class="form-control" id="address" name="description" value="{{event.description}}"></textarea>
+            </div>
+            <div class="modal-footer">
+              <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endfor %}
+
+
+{%endblock%}
