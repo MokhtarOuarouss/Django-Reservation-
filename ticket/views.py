@@ -64,7 +64,7 @@ def signup(request):
                 client = Client.objects.create(user=user)
                 client.save()
                 utilisateur.save()
-                return redirect('ticket:Client')
+                return redirect('ticket:espace_client')
     return render(request, 'Inscription.html')
 
 def signin(request):
@@ -75,11 +75,11 @@ def signin(request):
         if user is not None and user.is_active:
             login(request, user)
             if user.is_client:
-                return redirect('ticket:Client')
+                return redirect('ticket:espace_client')
             elif user.is_organizer:
                 return redirect('ticket:profil')
             else:
-                return redirect('ticket:admin')
+                return redirect('ticket:a_admin')
     return render(request, 'Login.html')
 @login_required(login_url="/signin")
 def Logout(request):
@@ -100,7 +100,7 @@ def updateProfil(request):
         user = request.user
         firstname = request.POST.get('first_name')
         lastname = request.POST.get('last_name')
-        email = request.POST.get('email')
+        #email = request.POST.get('email')
         phoneNumber = request.POST.get('phone_number')
         company = request.POST.get('company_name')
         address = request.POST.get('address')
@@ -109,7 +109,7 @@ def updateProfil(request):
         organizer = Organizer.objects.filter(user=user).first()
         user.first_name = firstname
         user.last_name = lastname
-        user.email = email
+        #user.email = email
         organizer.phone_number = phoneNumber
         organizer.address = address
         organizer.website = website
@@ -232,8 +232,35 @@ def espace_organizer(request):
 """Clients """
 @login_required(login_url="/signin")
 def espace_client(request):
+    user = request.user
+    client = Client.objects.filter(user=user).first()
+    return render(request, 'Clients/clientInfo.html',{'client': client})
 
-    return render(request, 'Clients/index.html')
+def ClientupdateProfil(request):
+    if request.method == 'POST':
+        user = request.user
+        Firstname = request.POST.get('first_name')
+        Lastname = request.POST.get('last_name')
+        PhoneNumber = request.POST.get('phone_number')
+        
+        address = request.POST.get('address')
+
+
+        client = Client.objects.filter(user=user).first()
+        user.first_name = Firstname
+        user.last_name = Lastname
+        client.phone_number = PhoneNumber
+        client.address = address
+        image = request.FILES.get('image')
+
+        if image is not None:
+            # Process the uploaded file
+            client.image = image
+
+        user.save()
+        client.save()
+
+        return redirect("ticket:espace_client")
 """Admin"""
 @login_required(login_url="/signin")
 def espace_admin(request):

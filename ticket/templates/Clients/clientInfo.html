@@ -1,0 +1,206 @@
+{%extends "base.html" %}
+{% load static %}
+<meta name='viewport' content='width=device-width, initial-scale=1'>
+
+
+<link rel="stylesheet" href="{% static 'css/eventInfo.css' %}">
+
+
+{% block content %}
+
+
+<div class="container">
+    <div class="main-body">
+        <!-- Breadcrumb -->
+        <br>
+        <!-- /Breadcrumb -->
+        <div class="row gutters-sm">
+            <div class="col-md-4 mb-3">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex flex-column align-items-center text-center">
+                        {% if client.image.url != none %}
+                            <img style="width:150px;height:200px" src="{{ client.image.url }}" />
+                        {% else %}
+                            <img style="width:150px;height:200px"  />
+                        {% endif %}
+                            <div class="mt-5">
+                                <h4>{{ client.user.first_name }} {{ client.user.last_name }}</h4>
+                                <p class="text-secondary mb-1">{{ client.company_name }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <h6 class="mb-0">Full Name</h6>
+                            </div>
+                            <div class="col-sm-9 text-secondary">
+                                {{ client.user.first_name }} {{ client.user.last_name }}
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <h6 class="mb-0">Email</h6>
+                            </div>
+                            <div class="col-sm-9 text-secondary">
+                                {{ client.user.email }} 
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <h6 class="mb-0">Phone</h6>
+                            </div>
+                            <div class="col-sm-9 text-secondary">
+                                {{ client.phone_number }}
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <h6 class="mb-0">Address</h6>
+                            </div>
+                            <div class="col-sm-9 text-secondary">
+                                {{ client.address }}
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <h6 class="mb-0">Action</h6>
+                            </div>
+                            <div class="col-sm-9 text-secondary">
+                                <a href="#" class="btn btn-success" name="btnAddMore" value="Edit Profile" data-toggle="modal" data-target="#updateProfil">Update Profile</a> 
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+        <!-- Start -->
+        {% for event in Events %}
+        <div class="col-sm-6 col-md-4 col-lg-3 mt-4">
+            <div class="card">
+                <img class="card-img-top" id ="imEvent" src="{{event.image.url}}">                    
+                  <div class="card-block" >
+                      <figure class="profile">
+                          <img src="{{event.client.image.url}}" class="profile-avatar" alt="">
+                      </figure>
+                      <a href="{% url 'ticket:clientInfo' id=event.client.id %}" style="color:bla"><p style='margin-bottom: 0;'>{{event.client.company_name}}</p></a>
+                      <h4 class="card-title">{{ event.title }}</h4>
+                      <div class="meta">
+                          <a>{{ event.date }} | {{ event.time }}</a>
+                      </div>
+                      <div class="meta">
+                          <a>in <b>{{ event.location }}</b> </a>
+                      </div>
+                      <div class="meta">
+                        <div class="card-text"><a href="{% url 'ticket:EventrInfo' id=event.id %}">see more .... </a></div>
+                        
+                    </div>
+                  </div>
+                <div class="card-footer tab-card-header">
+                    <ul class="nav nav-tabs card-header-tabs" id="myTab" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link" id="one-tab" data-toggle="tab" href="#{{ event.id }}" role="tab"
+                                aria-controls="One" aria-selected="true">Gold </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="two-tab" data-toggle="tab" href="#{{ event.id }}+1" role="tab"
+                                aria-controls="Two" aria-selected="false">Silver</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="three-tab" data-toggle="tab" href="#{{ event.id }}+2" role="tab"
+                                aria-controls="Three" aria-selected="false">Copper</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="tab-content" id="myTabContent">
+                    <div class="tab-pane fade show active p-3" id="{{ event.id }}" role="tabpanel"
+                        aria-labelledby="one-tab" style="background-color: gold">
+                        <h5 class="card-title">{{ event.first_class_price }} DH</h5>
+                        <a href="#" class="btn btn-primary">Add to cart</a>
+                    </div>
+                    <div class="tab-pane fade p-3" id="{{ event.id }}+1" role="tabpanel" aria-labelledby="two-tab"
+                        style="background-color: silver">
+                        <h5 class="card-title">{{ event.second_class_price }} DH</h5>
+                        <a href="#" class="btn btn-primary">Add to cart</a>
+                    </div>
+                    <div class="tab-pane fade p-3" id="{{ event.id }}+2" role="tabpanel" aria-labelledby="three-tab"
+                        style="background-color: white">
+                        <h5 class="card-title">{{ event.third_class_price }} DH</h5>
+                        <a href="#" class="btn btn-primary">Add to cart</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+        <!-- End -->
+    </div>
+</div>
+
+  <!-- Modal Update Info -->
+  <div class="modal fade" id="updateProfil" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 class="modal-title fs-5">Edit Profile</h3>
+        </div>
+        <div class="modal-body">
+          <form method="POST" action="{% url 'ticket:ClientupdateProfil'%}">
+            {% csrf_token %}
+            <div class="mb-3">
+              <label for="name" class="col-form-label">First Name:</label>
+              <input type="text" class="form-control" id="name" name="first_name" value="{{ client.user.first_name }}">
+            </div>
+            <div class="mb-3">
+              <label for="name" class="col-form-label">Last Name:</label>
+              <input type="text" class="form-control" id="name" name="last_name" value="{{ client.user.last_name }}">
+            </div>
+            <div class="mb-3">
+              <label for="email" class="col-form-label">Email:</label>
+              <input type="email" class="form-control" id="email" name="email" value="{{ client.user.email }}" disabled >
+            </div>
+            <div class="mb-3">
+              <label for="phone_number" class="col-form-label">Phone Number:</label>
+              <input type="text" class="form-control" id="phone_number" name="phone_number" value="{{ client.phone_number }}">
+            </div>
+           
+            <div class="mb-3">
+              <label for="address" class="col-form-label">Address:</label>
+              <input type="text" class="form-control" id="address" name="address" value="{{ client.address }}">
+            </div>
+            <div class="mb-3">
+              <label for="website" class="col-form-label">Image:</label>
+              <input type="file" class="form-control" id="website" name="image" >
+            </div>
+            <div class="modal-footer">
+              <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal fade" id="AddEvent" role="dialog">
+    <div class="modal-dialog">
+
+
+
+
+
+
+{%endblock%}

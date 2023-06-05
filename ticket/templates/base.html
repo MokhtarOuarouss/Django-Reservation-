@@ -111,9 +111,9 @@
                 <div class="collapse navbar-collapse" id="navbarResponsive">
                     <ul class="navbar-nav ml-auto">
 
-                        <form class="search-container" action="{% url 'ticket:Search'  %}" method="GET">
+                        <form class="search-container" action="{% url 'ticket:Search'  %}" method="GET" style="margin-bottom : 0">
                             <input type="text" placeholder="Search.." name="search">
-                            <button type="submit"><i class="fa fa-search"></i></button>
+                            <button type="submit"  style="height:37.5;background-color:gold"><i class="fa fa-search"></i></button>
                         </form>
 
                         {% if user.is_authenticated %}
