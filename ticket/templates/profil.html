@@ -221,9 +221,20 @@
               <label for="location" class="col-form-label">Location :</label>
               <input type="location" class="form-control" id="password" name="location">
             </div>
+            
             <div class="mb-3">
-              <label for="type" class="col-form-label">Type :</label>
-              <input type="text" class="form-control" id="phone_number" name="type" >
+              <label for="type" class="col-form-label">City :</label>
+              <input type="text" class="form-control" id="phone_number" name="city" >
+            </div>
+            <div class="mb-3">
+              <label for="location" class="col-form-label">Type :</label>
+              <select class="form-control" id="password" name="type">
+                <option selected value="Training Programs">Training Programs</option>
+                <option value="Sports">Sports </option>
+                <option value="Music">Music</option>
+                <option value="Networking Events">Networking Events</option>
+                <option value="Festivals/Celebrations">Festivals/Celebrations</option>
+              </select>
             </div>
             <div class="mb-3">
               <label for="image" class="col-form-label">Image  :</label>
@@ -284,8 +295,19 @@
             <input type="location" class="form-control" id="password" name="location" value="{{event.location}}">
           </div>
           <div class="mb-3">
-            <label for="type" class="col-form-label">Type :</label>
-            <input type="text" class="form-control" id="phone_number" name="type" value="{{event.type}}" >
+            <label for="type" class="col-form-label">City :</label>
+            <input type="text" class="form-control" id="phone_number" name="city" value="{{event.city}}" >
+          </div>
+          <div class="mb-3">
+            <label for="location" class="col-form-label">Type :</label>
+            <select class="form-control" id="password" name="type">
+              <option selected value="{{event.type}}">{{event.type}}</option>
+              <option  value="Training Programs">Training Programs</option>
+              <option value="Sports">Sports </option>
+              <option value="Music">Music</option>
+              <option value="Networking Events">Networking Events</option>
+              <option value="Festivals/Celebrations">Festivals/Celebrations</option>
+            </select>
           </div>
           <div class="mb-3">
             <label for="image" class="col-form-label">Image  :</label>

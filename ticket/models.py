@@ -44,6 +44,7 @@ class Event(models.Model):
     date = models.DateField()
     time = models.TimeField()
     location = models.CharField(max_length=100)
+    city = models.CharField(max_length=100,null=True,blank=True)
     type = models.CharField(max_length=100)
     image = models.ImageField(upload_to='Events_images',null=True,blank=True)
     organizer = models.ForeignKey(Organizer, on_delete=models.CASCADE)

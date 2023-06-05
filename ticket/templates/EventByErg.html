@@ -64,63 +64,74 @@
 </div>
 </div>
 {% for event in Events %}
-  <div class="modal fade" id="{{event.id}}" role="dialog">
-    <div class="modal-dialog">
-      <!-- Modal content-->
-      <div class="modal-content">
-        <div class="modal-header">
-          <h3 class="modal-title fs-5">Edit Event</h3>
-        </div>
-        <div class="modal-body">
-          <form method="POST" action="UpdateEvents/{{event.id}}" enctype="multipart/form-data">
-            {% csrf_token %}
-            <div class="mb-3">
-              <label for="title" class="col-form-label">Title:</label>
-              <input type="text" class="form-control" id="name" name="title" value="{{event.title}}">
-            </div>
+<div class="modal fade" id="{{event.id}}" role="dialog">
+  <div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title fs-5">Edit Event</h3>
+      </div>
+      <div class="modal-body">
+        <form method="POST" action="UpdateEvents/{{event.id}}" enctype="multipart/form-data">
+          {% csrf_token %}
+          <div class="mb-3">
+            <label for="title" class="col-form-label">Title:</label>
+            <input type="text" class="form-control" id="name" name="title" value="{{event.title}}">
+          </div>
 
-            <div class="mb-3">
-              <label for="date" class="col-form-label">Date :</label>
-              <input type="datetime-local" class="form-control" id="email" name="date" value="{{event.date}} {{ event.time }}" >
-            </div>
+          <div class="mb-3">
+            <label for="date" class="col-form-label">Date :</label>
+            <input type="datetime-local" class="form-control" id="email" name="date" value="{{event.date}} {{ event.time }}" >
+          </div>
 
-            <div class="mb-3">
-              <label for="location" class="col-form-label">Location :</label>
-              <input type="location" class="form-control" id="password" name="location" value="{{event.location}}">
-            </div>
-            <div class="mb-3">
-              <label for="type" class="col-form-label">Type :</label>
-              <input type="text" class="form-control" id="phone_number" name="type" value="{{event.type}}" >
-            </div>
-            <div class="mb-3">
-              <label for="image" class="col-form-label">Image  :</label>
-              <input type="file" class="form-control" id="company_name" name="image" value="{{event.image}}">
-            </div>
-            
-            <div class="mb-3">
-              <label for="price" class="col-form-label">First Price:</label>
-              <input type="number" class="form-control" id="website" min=0 name="firstprice" value="{{event.first_class_price}}">
-            </div>
-            <div class="mb-3">
-              <label for="price" class="col-form-label">Second Price:</label>
-              <input type="number" class="form-control" id="website" min=0  name="secondprice" value="{{event.second_class_price}}">
-            </div>
-            <div class="mb-3">
-              <label for="price" class="col-form-label">Third Price:</label>
-              <input type="number" class="form-control" id="website" min=0  name="thirsprice" value="{{event.third_class_price}}">
-            </div>
-            <div class="mb-3">
-              <label for="description" class="col-form-label">Description:</label>
-              <textarea  style="width:100% ; heigth : 300%" class="form-control" id="address" name="description" value="{{event.description}}"></textarea>
-            </div>
-            <div class="modal-footer">
-              <button type="submit" class="btn btn-primary">Submit</button>
-            </div>
-          </form>
-        </div>
+          <div class="mb-3">
+            <label for="location" class="col-form-label">Location :</label>
+            <input type="location" class="form-control" id="password" name="location" value="{{event.location}}">
+          </div>
+          <div class="mb-3">
+            <label for="type" class="col-form-label">City :</label>
+            <input type="text" class="form-control" id="phone_number" name="city" value="{{event.city}}" >
+          </div>
+          <div class="mb-3">
+            <label for="location" class="col-form-label">Type :</label>
+            <select class="form-control" id="password" name="type">
+              <option selected value="{{event.type}}">{{event.type}}</option>
+              <option  value="Training Programs">Training Programs</option>
+              <option value="Sports">Sports </option>
+              <option value="Music">Music</option>
+              <option value="Networking Events">Networking Events</option>
+              <option value="Festivals/Celebrations">Festivals/Celebrations</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label for="image" class="col-form-label">Image  :</label>
+            <input type="file" class="form-control" id="company_name" name="image" value="{{event.image}}">
+          </div>
+          
+          <div class="mb-3">
+            <label for="price" class="col-form-label">First Price:</label>
+            <input type="number" class="form-control" id="website" min=0 name="firstprice" value="{{event.first_class_price}}">
+          </div>
+          <div class="mb-3">
+            <label for="price" class="col-form-label">Second Price:</label>
+            <input type="number" class="form-control" id="website" min=0  name="secondprice" value="{{event.second_class_price}}">
+          </div>
+          <div class="mb-3">
+            <label for="price" class="col-form-label">Third Price:</label>
+            <input type="number" class="form-control" id="website" min=0  name="thirsprice" value="{{event.third_class_price}}">
+          </div>
+          <div class="mb-3">
+            <label for="description" class="col-form-label">Description:</label>
+            <textarea  style="width:100% ; heigth : 300%" class="form-control" id="address" name="description" value="{{event.description}}"></textarea>
+          </div>
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-primary">Submit</button>
+          </div>
+        </form>
       </div>
     </div>
   </div>
+</div>
 {% endfor %}
 
 

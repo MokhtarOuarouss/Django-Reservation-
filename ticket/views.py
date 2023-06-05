@@ -1,5 +1,6 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render,redirect
+from django.db.models import Q
 from django.contrib.auth import authenticate, login, logout, get_user_model
 from pyexpat.errors import messages
 
@@ -15,8 +16,10 @@ def Event_List(request):
 def Search(request):
     query = request.GET.get('search')  # Get the search query from the request
 
+   
     if query:
-        results = Event.objects.filter(title__icontains=query)  # Perform the search using the 'icontains' lookup
+         results = Event.objects.filter(Q(title__icontains=query) | Q(city__icontains=query))
+          # Perform the search using the 'icontains' lookup
     else:
         results = Event.objects.none()  # Empty queryset when no search query is provided
 
@@ -139,6 +142,7 @@ def AddEvents(request):
         title = request.POST.get('title')
         date_string = request.POST.get('date')
         location = request.POST.get('location')
+        city = request.POST.get('city')
         type = request.POST.get('type')
         firstprice = request.POST.get('firstprice')
         secondprice = request.POST.get('secondprice')
@@ -155,6 +159,7 @@ def AddEvents(request):
                                      date=date,
                                      time=time,
                                      location=location,
+                                     city=city,
                                      type= type,
                                      first_class_price=firstprice,
                                      second_class_price=secondprice,
@@ -175,6 +180,7 @@ def UpdateEvents(request,id):
         title = request.POST.get('title')
         date_string = request.POST.get('date')
         location = request.POST.get('location')
+        city = request.POST.get('city')
         type = request.POST.get('type')
         firstprice = request.POST.get('firstprice')
         secondprice = request.POST.get('secondprice')
@@ -191,6 +197,7 @@ def UpdateEvents(request,id):
         event.time=time
         event.location=location
         event.type= type
+        event.city= city
         event.first_class_price=firstprice
         event.second_class_price=secondprice
         event.third_class_price=thirsprice
