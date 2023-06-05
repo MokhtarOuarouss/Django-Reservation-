@@ -18,7 +18,21 @@
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
             integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous" />
-
+            [17:46, 05/06/2023] +212 624-929941: <script>
+                window.onscroll = function() {myFunction()};
+      
+                var navbar = document.getElementById("mainNav");
+                var sticky = navbar.offsetTop;
+      
+                function myFunction() {
+                  if (window.pageYOffset >= sticky) {
+                    navbar.classList.add("sticky")
+                  } else {
+                    navbar.classList.remove("sticky");
+                  }
+                }
+              </script>
+               
         <style>
             body {
                 font-family: "Roboto", sans-serif;
@@ -47,6 +61,18 @@
             .card {
                 box-shadow: 0 16px 48px #E3E7EB;
             }
+            .sticky {
+                position: fixed;
+                top: 0;
+                width: 100%;
+                z-index: 9999;
+              }
+              #mainNav {
+                position: fixed;
+                top: 0;
+                width: 100%;
+                z-index: 9999;
+              }
         </style>
     </head>
 
@@ -68,13 +94,13 @@
 
                         {% if user.is_authenticated %}
                             <li class="nav-item text-black">
-                                <a class="nav-link text-black font-weight-bold"  data-toggle="modal" data-target="#login">{{user.first_name}} {{user.last_name}}</a>
+                                <a class="nav-link text-black font-weight-bold"  href="{% url 'ticket:profil'%}" >{{user.first_name}} {{user.last_name}}</a>
                             </li>
                              <li class="nav-item text-black">
                                 <a class="nav-link text-black font-weight-bold" href="{% url 'ticket:Logout' %}" >Log out</a>
                             </li>
-                            {% if org %}
-                                    <img src="{{ org.image.url }}" class="rounded-circle" alt="Profile Image" width="45" height="45">
+                            {% if organizer %}
+                                    <img src="{{ organizer.image.url }}" class="rounded-circle" alt="Profile Image" width="45" height="45">
                             {% else %}
                                      <img src="{% static '/image.png' %}" class="rounded-circle" alt="Default Image" width="45" height="45">
                             {% endif %}
@@ -168,6 +194,7 @@
                 </div>
             </div>
         </div>
+        <br><br>
 
 
 

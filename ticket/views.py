@@ -212,7 +212,10 @@ def OrganizerInfo(request, id):
     context = {'Organizer': organizer, 'Events': events}
 
     return render(request, 'OrganizerInfo.html', context)
-
+def EventrInfo(request, id):
+    event = Event.objects.get(id=id)
+    context = { 'event': event}
+    return render(request, 'Eventinfo.html', context)
 def espace_organizer(request):
     user = request.user
     org = Organizer.objects.filter(user=user).first()

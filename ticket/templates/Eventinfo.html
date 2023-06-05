@@ -1,0 +1,115 @@
+{%extends "base.html" %}
+{% load static %}
+<meta name='viewport' content='width=device-width, initial-scale=1'>
+
+
+<link rel="stylesheet" href="{% static 'css/eventInfo.css' %}">
+
+
+{% block content %}
+
+
+<div class="container">
+    <div class="main-body">
+        <!-- Breadcrumb -->
+        <br>
+        <!-- /Breadcrumb -->
+        <div class="row gutters-sm">
+            <div class="col-md-4 mb-3">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex flex-column align-items-center text-center">
+                            <img style="width:300px;height:400px" src="{{ event.image.url }}" />
+                            <div class="mt-5">
+                                <h4>{{ event.organizer.company_name }}</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <h6 class="mb-0">Title</h6>
+                            </div>
+                            <div class="col-sm-9 text-secondary">
+                                {{ event.title }}
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <h6 class="mb-0">Date</h6>
+                            </div>
+                            <div class="col-sm-9 text-secondary">
+                                {{ event.date }} | {{ event.time }} 
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <h6 class="mb-0">Location</h6>
+                            </div>
+                            <div class="col-sm-9 text-secondary">
+                                {{ event.location }}
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <h6 class="mb-0">Company Name</h6>
+                            </div>
+                            <div class="col-sm-9 text-secondary">
+                                {{ event.organizer.company_name }}
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <h6 class="mb-0">First Class Price</h6>
+                            </div>
+                            <div class="col-sm-9 text-secondary">
+                                {{ event.first_class_price }}
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <h6 class="mb-0">Second Class Price</h6>
+                            </div>
+                            <div class="col-sm-9 text-secondary">
+                                {{ event.second_class_price }}
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <h6 class="mb-0">Third Class Price</h6>
+                            </div>
+                            <div class="col-sm-9 text-secondary">
+                                {{ event.third_class_price }}
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <h6 class="mb-0">Description</h6>
+                            </div>
+                            <div class="col-sm-9 text-secondary">
+                                {{ event.description }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+{%endblock%}
