@@ -5,7 +5,7 @@ from django.contrib.auth.models import AbstractUser, User
 
 
 class User(AbstractUser):
-    is_client = models.BooleanField(default=False)
+    is_client = models.BooleanField(default=True)
     is_organizer = models.BooleanField(default=False)
     is_administrateur = models.BooleanField(default=False)
 

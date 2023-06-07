@@ -46,7 +46,7 @@ def signup(request):
         if password != password1:
             return redirect('ticket:signup')
         if not nom or not prenom or not email or not password or not password1:
-            return redirect('ticket:signup/')
+            return redirect('ticket:signup')
         if User.objects.filter(email=email):
             return redirect('ticket:signup')
         # Rediriger l'utilisateur vers une page de confirmation
@@ -54,17 +54,18 @@ def signup(request):
             utilisateur = User.objects.create_user(username=email, email=email, password=password,
                                                    first_name=prenom,
                                                    last_name=nom)
-            user = authenticate(request, username=email, password=password)
-            login(request, user)
+            users = authenticate(request, username=email, password=password)
+            login(request, users)
             if type == 'organizer':
-                user.is_organizer = True
-                organizer = Organizer.objects.create(user=user)
+                utilisateur.is_organizer=True
+                utilisateur.is_client=False
+                organizer = Organizer.objects.create(user=utilisateur)
                 organizer.save()
                 utilisateur.save()
-                return redirect('ticket:profil/')
+                return redirect('ticket:profil')
             elif type == 'client':
-                user.is_client = True
-                client = Client.objects.create(user=user)
+                utilisateur.is_client = True
+                client = Client.objects.create(user=utilisateur)
                 client.save()
                 utilisateur.save()
                 return redirect('ticket:espace_client')
@@ -260,9 +261,9 @@ def ClientupdateProfil(request):
         client.address = address
         image = request.FILES.get('image')
 
-        if image is not None:
+        #if image is not None:
             # Process the uploaded file
-            client.image = image
+        client.image = image
 
         user.save()
         client.save()

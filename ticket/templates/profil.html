@@ -14,7 +14,11 @@
       <div class="row">
           <div class="col-md-4">
               <div class="profile-img">
-                  <img src="{{ organizer.image.url }}" />
+                  {% if organizer.image %}
+                    <img src="{{ organizer.image.url }}" />
+                  {% else %}
+                    <img src="{% static 'images/image.png' %}" />
+                  {% endif %}
                   <form method="post" action='updateImageProfil' >
                     {% csrf_token %}
                     <div style="margin-top:5%" class="file btn btn-lg btn-primary">

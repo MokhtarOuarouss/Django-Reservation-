@@ -1,7 +1,162 @@
-{% extends 'base.html' %}
 
-{% block content %}
 {% load static %}
+
+<head>
+        <title>Django Central</title>
+        <link rel="stylesheet" href="{% static 'css/base.css' %}">
+        <link rel="stylesheet" href="{% static 'css/profil.css' %}">
+
+
+        <link rel="stylesheet" href="{% static 'css/smi.css' %}">
+        <link rel="stylesheet" href="{% static 'css/template.css' %}">
+        <link rel="stylesheet" href="{% static 'css/head.css' %}">
+        <link rel="stylesheet" href="{% static 'css/template.css' %}">
+
+
+        <link href="https://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet">
+        <meta name="google" content="notranslate" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <script>
+                window.onscroll = function() {myFunction()};
+
+                var navbar = document.getElementById("mainNav");
+                var sticky = navbar.offsetTop;
+
+                function myFunction() {
+                  if (window.pageYOffset >= sticky) {
+                    navbar.classList.add("sticky")
+                  } else {
+                    navbar.classList.remove("sticky");
+                  }
+                }
+              </script>
+
+        <style>
+            body {
+                font-family: "Roboto", sans-serif;
+                font-size: 17px;
+                background-color: #fdfdfd;
+            }
+
+            .shadow {
+                box-shadow: 0 4px 2px -2px rgba(0, 0, 0, 0.1);
+            }
+
+            .btn-danger {
+                color: #fff;
+                background-color: #f00000;
+                border-color: #dc281e;
+            }
+
+            .masthead {
+                background: #3398E1;
+                height: auto;
+                padding-bottom: 15px;
+                box-shadow: 0 16px 48px #E3E7EB;
+                padding-top: 10px;
+            }
+
+            .card {
+                box-shadow: 0 16px 48px #E3E7EB;
+            }
+            .sticky {
+                position: fixed;
+                top: 0;
+                width: 100%;
+                z-index: 9999;
+              }
+              #mainNav {
+                position: fixed;
+                top: 0;
+                width: 100%;
+                z-index: 9999;
+              }
+              .navbar-nav .search-container button:hover {
+                background: #ccc;
+              }
+              .navbar-nav .search-container button {
+                float: right;
+                padding: 6px 10px;
+                margin-top: 8px;
+                margin-right: 16px;
+                background: #ddd;
+                font-size: 17px;
+                border: none;
+                cursor: pointer;
+              }
+              .navbar-nav input[type=text] {
+                padding: 6px;
+                margin-top: 8px;
+                font-size: 17px;
+                border: none;
+              }
+        </style>
+    </head>
+
+    <body>
+
+
+        <!-- Navigation -->
+        <nav class="navbar navbar-expand-lg navbar-light bg-light shadow" id="mainNav">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="{% url 'ticket:event_list' %}">NEW</a>
+                <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
+                    data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false"
+                    aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarResponsive">
+                    <ul class="navbar-nav ml-auto">
+
+
+
+                        {% if user.is_authenticated %}
+                            <li class="nav-item text-black">
+                                <a class="nav-link text-black font-weight-bold"  href="{% url 'ticket:profil'%}" >{{user.first_name}} {{user.last_name}}</a>
+                            </li>
+                             <li class="nav-item text-black">
+                                <a class="nav-link text-black font-weight-bold" href="{% url 'ticket:Logout' %}" >Log out</a>
+                            </li>
+                            {% if user.is_organizer %}
+                                {% if organizer.image %}
+                                        <img src="{{ organizer.image.url }}" class="rounded-circle" alt="Profile Image" width="45" height="45">
+                                {% else %}
+                                         <img src="{% static 'image/user.png' %}" class="rounded-circle" alt="Bootstrap" width="45" height="45">
+                                {% endif %}
+                            {% endif %}
+                            {% if user.is_client %}
+                                {% if client.image %}
+                                        <img src="{{ client.image.url }}" class="rounded-circle" alt="Profile Image" width="45" height="45">
+                                {% else %}
+                                         <img src="{% static 'image/user.png' %}" class="rounded-circle" alt="Default Image" width="45" height="45">
+                                {% endif %}
+                            {% endif %}
+                            {% if user.is_administrateur %}
+                                {% if admin.image %}
+                                        <img src="{{ admin.image.url }}" class="rounded-circle" alt="Profile Image" width="45" height="45">
+                                {% else %}
+                                         <img src="{% static 'image/user.png' %}" class="rounded-circle" alt="Default Image" width="45" height="45">
+                                {% endif %}
+                            {% endif %}
+                        {% else %}
+                            <li class="nav-item text-black">
+                                <a class="nav-link text-black font-weight-bold"  data-toggle="modal" data-target="#login">Log in</a>
+                            </li>
+                            <li class="nav-item text-black">
+                                <a class="nav-link text-black font-weight-bold"  data-toggle="modal" data-target="#singup">Sign up</a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+
+
+
 
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
      <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
@@ -9,8 +164,8 @@
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 
 <link rel="stylesheet"  href="{% static 'css/Inscription.css' %}">
-    <h2></h2><br>
-    <form method="post" action="" id="form" class=" needs-validation"  enctype="multipart/form-data" novalidate >
+    <h2></h2><br><br><br>
+    <form method="post" action="" id="signup" class="signup needs-validation"  enctype="multipart/form-data" novalidate >
         {% csrf_token %}
         <h2 class="signupuser">Sign In</h2>
         <!--{{ form.as_p }}-->
@@ -25,24 +180,92 @@
 
         <label for="validationServer03">Email:</label>
         <input type="email" class="form-control" id="validationServer03" name="Email" required>
-
+        <!--
         <label for="validationServer05">Type:</label>
         <select class="form-control" aria-label="Default select example" name="type">
           <option value="organizer">Organizer</option>
           <option value="client">Client</option>
         </select>
-
+        -->
         <label for="validationServer04">Password:</label>
         <input type="password" class="form-control" id="validationServer04" name="password" required>
 
         <label for="validationServer05">Conferm Password:</label>
         <input type="password" class="form-control" id="validationServer05" name="password1" required>
+        <div class="form-group">
+
+        <label for="id_type">Type</label>
+        <select class="form-control" id="id_type" name="type" required>
+          <option value="client">Client</option>
+          <option value="organizer">Organizer</option>
+        </select>
+      </div>
+
+        <!-- Organizer field-->
+
+      <div id="organizer_fields" style="display: none;">
+        <div class="form-group">
+          <label for="id_company_name">Company name</label>
+          <input type="text" class="form-control" id="id_company_name" name="company_name">
+        </div>
+        <div class="form-group">
+          <label for="id_website">Web site</label>
+          <input type="url" class="form-control" id="id_website" name="website">
+        </div>
+        <div class="form-group">
+          <label for="phone_number_org">Phone number</label>
+          <input type="text" class="form-control" id="phone_number_org" name="phone_number">
+        </div>
+        <div class="form-group">
+          <label for="address">Address</label>
+          <input type="text" class="form-control" id="address" name="address">
+        </div>
+        <div class="form-group">
+          <label for="image">Image</label>
+          <input type="file" class="form-control" id="image" name="image">
+        </div>
+      </div>
+        <!-- clients field-->
+      <div id="client_fields" style="display: none;">
+        <div class="form-group">
+          <label for="id_address">Address</label>
+          <input type="text" class="form-control" id="id_address" name="address_client">
+        </div>
+        <div class="form-group">
+          <label for="id_phone_number">Phone number</label>
+          <input type="text" class="form-control" id="id_phone_number" name="phone_number_client">
+        </div>
+        <div class="form-group">
+          <label for="image_client">Image</label>
+          <input type="file" class="form-control" id="image_client" name="image_client">
+        </div>
+      </div>
+      <button type="submit" class="btn btn-primary">S'inscrire</button>
+</form>
 
 
+       <!-- <button type="submit">Sign In</button> -->
 
-        <button type="submit">Sign In</button>
-    </form>
 
+<script>
+// Script pour afficher les champs supplémentaires en fonction du type sélectionné
+var typeField = document.getElementById("id_type");
+var companyFields = document.getElementById("organizer_fields");
+var clientFields = document.getElementById("client_fields");
+
+typeField.addEventListener("change", function() {
+  if (typeField.value === "organizer") {
+    companyFields.style.display = "block";
+    clientFields.style.display = "none";
+  } else if (typeField.value === "client") {
+    companyFields.style.display = "none";
+    clientFields.style.display = "block";
+  } else {
+    companyFields.style.display = "none";
+    clientFields.style.display = "none";
+  }
+});
+</script>
 
 
 <script>
@@ -67,6 +290,5 @@
     })()
 
 </script>
-{% endblock %}
-
+    </body>
 
