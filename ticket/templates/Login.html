@@ -1,7 +1,165 @@
-{% extends 'base.html' %}
 
-{% block content %}
 {% load static %}
+
+{% load static %}
+
+<head>
+        <title>Django Central</title>
+        <link rel="stylesheet" href="{% static 'css/base.css' %}">
+        <link rel="stylesheet" href="{% static 'css/profil.css' %}">
+
+
+        <link rel="stylesheet" href="{% static 'css/smi.css' %}">
+        <link rel="stylesheet" href="{% static 'css/template.css' %}">
+        <link rel="stylesheet" href="{% static 'css/head.css' %}">
+        <link rel="stylesheet" href="{% static 'css/template.css' %}">
+
+
+        <link href="https://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet">
+        <meta name="google" content="notranslate" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <script>
+                window.onscroll = function() {myFunction()};
+
+                var navbar = document.getElementById("mainNav");
+                var sticky = navbar.offsetTop;
+
+                function myFunction() {
+                  if (window.pageYOffset >= sticky) {
+                    navbar.classList.add("sticky")
+                  } else {
+                    navbar.classList.remove("sticky");
+                  }
+                }
+              </script>
+
+        <style>
+            body {
+                font-family: "Roboto", sans-serif;
+                font-size: 17px;
+                background-color: #fdfdfd;
+            }
+
+            .shadow {
+                box-shadow: 0 4px 2px -2px rgba(0, 0, 0, 0.1);
+            }
+
+            .btn-danger {
+                color: #fff;
+                background-color: #f00000;
+                border-color: #dc281e;
+            }
+
+            .masthead {
+                background: #3398E1;
+                height: auto;
+                padding-bottom: 15px;
+                box-shadow: 0 16px 48px #E3E7EB;
+                padding-top: 10px;
+            }
+
+            .card {
+                box-shadow: 0 16px 48px #E3E7EB;
+            }
+            .sticky {
+                position: fixed;
+                top: 0;
+                width: 100%;
+                z-index: 9999;
+              }
+              #mainNav {
+                position: fixed;
+                top: 0;
+                width: 100%;
+                z-index: 9999;
+              }
+              .navbar-nav .search-container button:hover {
+                background: #ccc;
+              }
+              .navbar-nav .search-container button {
+                float: right;
+                padding: 6px 10px;
+                margin-top: 8px;
+                margin-right: 16px;
+                background: #ddd;
+                font-size: 17px;
+                border: none;
+                cursor: pointer;
+              }
+              .navbar-nav input[type=text] {
+                padding: 6px;
+                margin-top: 8px;
+                font-size: 17px;
+                border: none;
+              }
+        </style>
+    </head>
+
+    <body>
+
+
+        <!-- Navigation -->
+        <nav class="navbar navbar-expand-lg navbar-light bg-light shadow" id="mainNav">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="{% url 'ticket:event_list' %}">NEW</a>
+                <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
+                    data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false"
+                    aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarResponsive">
+                    <ul class="navbar-nav ml-auto">
+
+
+
+                        {% if user.is_authenticated %}
+                            <li class="nav-item text-black">
+                                <a class="nav-link text-black font-weight-bold"  href="{% url 'ticket:profil'%}" >{{user.first_name}} {{user.last_name}}</a>
+                            </li>
+                             <li class="nav-item text-black">
+                                <a class="nav-link text-black font-weight-bold" href="{% url 'ticket:Logout' %}" >Log out</a>
+                            </li>
+                            {% if user.is_organizer %}
+                                {% if organizer.image %}
+                                        <img src="{{ organizer.image.url }}" class="rounded-circle" alt="Profile Image" width="45" height="45">
+                                {% else %}
+                                         <img src="{% static 'image/user.png' %}" class="rounded-circle" alt="Bootstrap" width="45" height="45">
+                                {% endif %}
+                            {% endif %}
+                            {% if user.is_client %}
+                                {% if client.image %}
+                                        <img src="{{ client.image.url }}" class="rounded-circle" alt="Profile Image" width="45" height="45">
+                                {% else %}
+                                         <img src="{% static 'image/user.png' %}" class="rounded-circle" alt="Default Image" width="45" height="45">
+                                {% endif %}
+                            {% endif %}
+                            {% if user.is_administrateur %}
+                                {% if admin.image %}
+                                        <img src="{{ admin.image.url }}" class="rounded-circle" alt="Profile Image" width="45" height="45">
+                                {% else %}
+                                         <img src="{% static 'image/user.png' %}" class="rounded-circle" alt="Default Image" width="45" height="45">
+                                {% endif %}
+                            {% endif %}
+                        {% else %}
+                            <li class="nav-item text-black">
+                                <a class="nav-link text-black font-weight-bold"   href="{% url 'ticket:signin' %}">Log in</a>
+                            </li>
+                            <li class="nav-item text-black">
+                                <a class="nav-link text-black font-weight-bold"   href="{% url 'ticket:signup' %}">Sign up</a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+
+
+
+<br> <br><br>
 <link rel="stylesheet" href="{% static 'css/Login.css' %}">
 <style>
   .Err{
@@ -13,21 +171,43 @@
   }
 </style>
   <h2 ></h2><br><br>
-  <form method="post" >
+  <form method="post"  class=" needs-validation"  enctype="multipart/form-data" novalidate >
     <h2 class="connuser">Log In</h2>
     {% csrf_token %}
     <!--{{ form.as_p }} -->
       <label>Email:</label>
-        <input type="email" id="email" name="email" >
+        <input type="email" class="form-control" id="email" name="email" required>
 
         <label>Password</label>
-        <input type="password" id="password" name="password" >
+        <input type="password" class="form-control" id="password" name="password" required>
 
         <p class="Err">{{ err }}</p>
 
-        <button type="submit">Se connecter</button>
+        <button type="submit">Login </button>
         <div class="liens" ><br>
           <p>créer votre compte ?<a   aria-current="page" href="{% url 'ticket:signup'%}">S'inscrire</a></p>
         </div>
   </form>
-{% endblock %}
+    <script>
+
+        (() => {
+      'use strict'
+
+      // Fetch all the forms we want to apply custom Bootstrap validation styles to
+      const forms = document.querySelectorAll('.needs-validation')
+
+      // Loop over them and prevent submission
+      Array.from(forms).forEach(form => {
+        form.addEventListener('submit', event => {
+          if (!form.checkValidity()) {
+            event.preventDefault()
+            event.stopPropagation()
+          }
+
+          form.classList.add('was-validated')
+        }, false)
+      })
+    })()
+
+</script>
+    </body>

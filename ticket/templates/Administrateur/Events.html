@@ -1,0 +1,78 @@
+{%extends "Administrateur/admin_base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container">
+    <div >
+            {% for msg in messages %}
+            <p style="background-color:#7FFFD4;color:black;padding-left:50px;">{{msg}} </p>
+            {% endfor %}
+        <br>
+    </div>
+    <div class="row">
+        <!-- Start -->
+
+        {% for event in Events %}
+        <div class="col-sm-6 col-md-4 col-lg-3 mt-4">
+            <div class="card">
+                <img class="card-img-top" id ="imEvent" src="{{event.image.url}}">
+                  <div class="card-block" >
+                      <figure class="profile">
+                          <img src="{{event.organizer.image.url}}" class="profile-avatar" alt="">
+                      </figure>
+                      <a href="{% url 'ticket:OrganizerInfo' id=event.organizer.id %}" style="color:bla"><p style='margin-bottom: 0;'>{{event.organizer.company_name}}</p></a>
+                      <h4 class="card-title">{{ event.title }}</h4>
+                      <div class="meta">
+                          <a>{{ event.date }} | {{ event.time }}</a>
+                      </div>
+                      <div class="meta">
+                          <a>in <b>{{ event.location }}</b> </a>
+                      </div>
+                      <div class="meta">
+                        <div class="card-text"><a href="{% url 'ticket:EventrInfo' id=event.id %}">see more .... </a></div>
+
+                    </div>
+                  </div>
+                <div class="card-footer tab-card-header">
+                    <ul class="nav nav-tabs card-header-tabs" id="myTab" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link" id="one-tab" data-toggle="tab" href="#{{ event.id }}" role="tab"
+                                aria-controls="One" aria-selected="true">Gold </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="two-tab" data-toggle="tab" href="#{{ event.id }}+1" role="tab"
+                                aria-controls="Two" aria-selected="false">Silver</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="three-tab" data-toggle="tab" href="#{{ event.id }}+2" role="tab"
+                                aria-controls="Three" aria-selected="false">Copper</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="tab-content" id="myTabContent">
+                    <div class="tab-pane fade show active p-3" id="{{ event.id }}" role="tabpanel"
+                        aria-labelledby="one-tab" style="background-color: gold">
+                        <h5 class="card-title">{{ event.first_class_price }} DH</h5>
+                    </div>
+                    <div class="tab-pane fade p-3" id="{{ event.id }}+1" role="tabpanel" aria-labelledby="two-tab"
+                        style="background-color: silver">
+                        <h5 class="card-title">{{ event.second_class_price }} DH</h5>
+                    </div>
+                    <div class="tab-pane fade p-3" id="{{ event.id }}+2" role="tabpanel" aria-labelledby="three-tab"
+                        style="background-color: white">
+                        <h5 class="card-title">{{ event.third_class_price }} DH</h5>
+                    </div>
+                    <a style="margin-left:20px" href="{% url 'ticket:EventValid' idk=event.id %}" class="btn btn-primary">validate</a>
+                    {% if event.is_valid %}
+                    <p style="margin-left:20px"><strong>is valid</strong></p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+        <!-- End -->
+    </div>
+</div>
+
+
+{% endblock  %}

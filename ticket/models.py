@@ -12,7 +12,7 @@ class User(AbstractUser):
 
 class Client(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, blank=True, null=True)
-    image = models.ImageField(upload_to='Client_images',null=True,blank=True)
+    image = models.ImageField(upload_to='Client_images',null=True,blank=True, default='Default/user.png')
     phone_number = models.CharField(max_length=20,null=True,blank=True)
     address = models.CharField(max_length=200,null=True,blank=True)
     update = models.DateTimeField(auto_now=True)
@@ -22,7 +22,7 @@ class Client(models.Model):
 
 class Organizer(models.Model):
     user = models.OneToOneField(User,on_delete=models.CASCADE,blank=True,null=True)
-    image = models.ImageField(upload_to='Organizer_images',null=True,blank=True)
+    image = models.ImageField(upload_to='Organizer_images',null=True,blank=True, default='Default/user.png')
     phone_number = models.CharField(max_length=20,null=True,blank=True)
     company_name = models.CharField(max_length=100,null=True,blank=True)
     address = models.CharField(max_length=200,null=True,blank=True)
@@ -51,6 +51,7 @@ class Event(models.Model):
     first_class_price = models.DecimalField(max_digits=8, decimal_places=2)
     second_class_price = models.DecimalField(max_digits=8, decimal_places=2)
     third_class_price = models.DecimalField(max_digits=8, decimal_places=2)
+    is_valid=models.BooleanField(default=False, null=True)
 
     objects = models.Manager()
 

@@ -14,7 +14,7 @@ urlpatterns = [
     path('Organizer', views.espace_organizer, name='Organizer'),
     path('Client', views.espace_client, name='espace_client'),
     path('Client/updateProfil', views.ClientupdateProfil, name='ClientupdateProfil'),
-    path('a_admin', views.espace_admin, name='a_admin'),
+    path('administrateur', views.espace_admin, name='administrateur'),
     path('Logout',views.Logout, name="Logout"),
     path('profil/updateProfil', views.updateProfil, name='updateprofil'),
     path('profil/AddEvents', views.AddEvents, name='AddEvents'),
@@ -25,6 +25,12 @@ urlpatterns = [
     path('organizer/OrganizerInfo/<int:id>', views.OrganizerInfo, name='OrganizerInfo'),
     path('organizer/EventrInfo/<int:id>', views.EventrInfo, name='EventrInfo'),
     path('/Search', views.Search, name='Search'),
+
+    path('administrateur/events/', views.admin_event, name='AdminEvent'),
+    path('administrateur/events/validation/event/<int:idk>/', views.Valider_Event, name='EventValid'),
+    path('administrateur/Clients/', views.client_admin, name='AdminClient'),
+    path('administrateur/Organizers/', views.Organizer_admin, name='AdminOrganizer'),
+
     # path('<slug:slug>/', views.post_detail, name='post_detail'),
    # path('Events', views.Event_List, name='event_list')
 ]

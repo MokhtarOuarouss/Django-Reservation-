@@ -1,9 +1,8 @@
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render,redirect
 from django.db.models import Q
 from django.contrib.auth import authenticate, login, logout, get_user_model
-from pyexpat.errors import messages
-
 from .models import *
 # Create your views here.
 def index(request):
@@ -83,7 +82,7 @@ def signin(request):
             elif user.is_organizer:
                 return redirect('ticket:profil')
             else:
-                return redirect('ticket:a_admin')
+                return redirect('ticket:administrateur')
     return render(request, 'Login.html')
 @login_required(login_url="/signin")
 def Logout(request):
@@ -97,7 +96,7 @@ def update(request):
 def delete(request):
     pass
 
-"""Organizer"""
+"""---------------------Organizer------------------"""
 @login_required(login_url="/signin")
 def updateProfil(request):
     if request.method == 'POST':
@@ -237,7 +236,7 @@ def espace_organizer(request):
     return render(request, 'Organizer/index.html', {'org': org})
 
 
-"""Clients """
+"""----------------Clients------------------ """
 @login_required(login_url="/signin")
 def espace_client(request):
     user = request.user
@@ -261,19 +260,43 @@ def ClientupdateProfil(request):
         client.address = address
         image = request.FILES.get('image')
 
-        #if image is not None:
+        if image is not None:
             # Process the uploaded file
-        client.image = image
+            client.image = image
 
         user.save()
         client.save()
 
         return redirect("ticket:espace_client")
-"""Admin"""
+
+"""----------------Administrateur------------"""
 @login_required(login_url="/signin")
 def espace_admin(request):
+    event_count=Event.objects.count()
+    organizer_count=Organizer.objects.count()
+    client_count=Client.objects.count()
+    context={}
+    return render(request, 'Administrateur/index.html')
 
-    return render(request, 'Admin/index.html')
+def admin_event(request):
+    event = Event.objects.all()
+    return render(request, 'Administrateur/Events.html', {'Events': event})
+def Valider_Event(request,idk):
+    event = Event.objects.get(id=idk)
+    if event.is_valid:
+        messages.info(request, 'Event ' + event.title + ' déja  valider ')
+    else:
+        event.is_valid = True
+        messages.info(request, 'Event ' + event.title + ' is valid successfully ')
+    event.save()
+    return redirect('ticket:AdminEvent')
+def client_admin(request):
+    client = Client.objects.all()
+    return render(request,'Administrateur/Client.html', {'clients':client})
+def Organizer_admin(request):
+    organizer = Organizer.objects.all()
+    return render(request,'Administrateur/Organizer.html', {'organizers': organizer})
+
 def base(request):
 
     return render(request, 'base.html')

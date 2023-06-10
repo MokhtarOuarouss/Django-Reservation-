@@ -118,31 +118,31 @@
 
                         {% if user.is_authenticated %}
                             <li class="nav-item text-black">
+
+                                {% if user.is_organizer %}
                                 <a class="nav-link text-black font-weight-bold"  href="{% url 'ticket:profil'%}" >{{user.first_name}} {{user.last_name}}</a>
+                                {% endif %}
+
+                                {% if user.is_client %}
+                                <a class="nav-link text-black font-weight-bold"  href="{% url 'ticket:espace_client'%}" >{{user.first_name}} {{user.last_name}}</a>
+                                {% endif %}
+
+                                {% if user.is_administrateur %}
+                                <a class="nav-link text-black font-weight-bold"  href="{% url 'ticket:administrateur'%}" >{{user.first_name}} {{user.last_name}}</a>
+                                {% endif %}
+
                             </li>
                              <li class="nav-item text-black">
                                 <a class="nav-link text-black font-weight-bold" href="{% url 'ticket:Logout' %}" >Log out</a>
                             </li>
                             {% if user.is_organizer %}
-                                {% if organizer.image %}
                                         <img src="{{ organizer.image.url }}" class="rounded-circle" alt="Profile Image" width="45" height="45">
-                                {% else %}
-                                         <img src="{% static 'image/user.png' %}" class="rounded-circle" alt="Bootstrap" width="45" height="45">
-                                {% endif %}
                             {% endif %}
                             {% if user.is_client %}
-                                {% if client.image %}
                                         <img src="{{ client.image.url }}" class="rounded-circle" alt="Profile Image" width="45" height="45">
-                                {% else %}
-                                         <img src="{% static 'image/user.png' %}" class="rounded-circle" alt="Default Image" width="45" height="45">
-                                {% endif %}
                             {% endif %}
                             {% if user.is_administrateur %}
-                                {% if admin.image %}
                                         <img src="{{ admin.image.url }}" class="rounded-circle" alt="Profile Image" width="45" height="45">
-                                {% else %}
-                                         <img src="{% static 'image/user.png' %}" class="rounded-circle" alt="Default Image" width="45" height="45">
-                                {% endif %}
                             {% endif %}
                         {% else %}
                             <li class="nav-item text-black">
