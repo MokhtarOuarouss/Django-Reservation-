@@ -4,33 +4,30 @@ from django.shortcuts import render,redirect
 from django.db.models import Q
 from django.contrib.auth import authenticate, login, logout, get_user_model
 from .models import *
+from django.core.files.uploadedfile import InMemoryUploadedFile
 # Create your views here.
 def index(request):
     return render(request,'index.html')
-
+#Show Event where is_valid = True
 def Event_List(request):
-    context = {'Events': Event.objects.all()}
+    context = {'Events': Event.objects.filter(is_valid=True)}
     return render(request, 'Events.html', context)
 
+#Search by title and by city
 def Search(request):
     query = request.GET.get('search')  # Get the search query from the request
 
-   
     if query:
-         results = Event.objects.filter(Q(title__icontains=query) | Q(city__icontains=query))
+         results = Event.objects.filter(Q(title__icontains=query) | Q(city__icontains=query) ,is_valid=True)
           # Perform the search using the 'icontains' lookup
     else:
         results = Event.objects.none()  # Empty queryset when no search query is provided
-
     return render(request, 'Events.html', {'Events': results, 'query': query})
 
-@login_required(login_url="/signin")
-def Profil(request):
-    user = request.user
-    organizer = Organizer.objects.filter(user=user).first()
-    events = Event.objects.filter(organizer=organizer)
-    context = {'organizer': organizer, 'Events': events}
-    return render(request, 'profil.html', context)
+
+
+#ORGANIZER 
+
 
 def signup(request):
     if request.method == 'POST':
@@ -89,21 +86,23 @@ def Logout(request):
     logout(request)
     return redirect('ticket:signin')
 
-@login_required(login_url="/signin")
-def update(request):
-    pass
-@login_required(login_url="/signin")
-def delete(request):
-    pass
 
 """---------------------Organizer------------------"""
+
+@login_required(login_url="/signin")
+def Profil(request):
+    user = request.user
+    organizer = Organizer.objects.filter(user=user).first()
+    events = Event.objects.filter(organizer=organizer)
+    context = {'organizer': organizer, 'Events': events}
+    return render(request, 'profil.html', context)
+
 @login_required(login_url="/signin")
 def updateProfil(request):
     if request.method == 'POST':
         user = request.user
         firstname = request.POST.get('first_name')
         lastname = request.POST.get('last_name')
-        #email = request.POST.get('email')
         phoneNumber = request.POST.get('phone_number')
         company = request.POST.get('company_name')
         address = request.POST.get('address')
@@ -112,7 +111,6 @@ def updateProfil(request):
         organizer = Organizer.objects.filter(user=user).first()
         user.first_name = firstname
         user.last_name = lastname
-        #user.email = email
         organizer.phone_number = phoneNumber
         organizer.address = address
         organizer.website = website
@@ -129,10 +127,11 @@ def updateImageProfil(request):
         user = request.user
         organizer = Organizer.objects.filter(user=user).first()
 
-        if image:
+        if image is not None:
             organizer.image = image
-            organizer.save()
-
+        
+        organizer.save()
+        
     return redirect("ticket:profil")
 
 @login_required(login_url="/signin")
@@ -188,7 +187,6 @@ def UpdateEvents(request,id):
         description = request.POST.get('description')
         
         date, time = date_string.split('T')
-        image =request.FILES.get('image')
         #event = Event.objects.filter(organizer=organizer).first()
 
 
@@ -210,26 +208,31 @@ def UpdateEvents(request,id):
         event.save()
         return redirect('ticket:profil')
         
-def DeleteEvent(id):
+def DeleteEvent(request,id):
     event = Event.objects.get(id=id)
     event.delete()
-    return redirect('ticket:profil')
+    return redirect('ticket:Event_List_organizer')
+
 def Event_List_organizer(request):
     user = request.user
     organizer = Organizer.objects.filter(user=user).first()
     events = Event.objects.filter(organizer=organizer)
     context = {'Events': events}
     return render(request, 'EventByErg.html', context)
+
+
 def OrganizerInfo(request, id):
     organizer = Organizer.objects.get(id=id)
     events = Event.objects.filter(organizer=organizer)
     context = {'Organizer': organizer, 'Events': events}
 
     return render(request, 'OrganizerInfo.html', context)
+
 def EventrInfo(request, id):
     event = Event.objects.get(id=id)
     context = { 'event': event}
     return render(request, 'Eventinfo.html', context)
+
 def espace_organizer(request):
     user = request.user
     org = Organizer.objects.filter(user=user).first()
@@ -244,7 +247,7 @@ def espace_client(request):
     return render(request, 'Clients/clientInfo.html',{'client': client})
 
 def ClientupdateProfil(request):
-    if request.method == 'POST':
+    if request.method == 'POST' :
         user = request.user
         Firstname = request.POST.get('first_name')
         Lastname = request.POST.get('last_name')
@@ -252,24 +255,28 @@ def ClientupdateProfil(request):
         
         address = request.POST.get('address')
 
-
         client = Client.objects.filter(user=user).first()
         user.first_name = Firstname
         user.last_name = Lastname
         client.phone_number = PhoneNumber
         client.address = address
-        image = request.FILES.get('image')
 
+        image = request.FILES.get('image')
+        
         if image is not None:
             # Process the uploaded file
+            #client.image.delete()
             client.image = image
-
+        """
+        if isinstance(image, InMemoryUploadedFile):
+            client.image.save(image.name,image)
+        """
         user.save()
         client.save()
 
         return redirect("ticket:espace_client")
 
-"""----------------Administrateur------------"""
+"""----------------Administrator------------"""
 @login_required(login_url="/signin")
 def espace_admin(request):
     event_count=Event.objects.count()
@@ -281,6 +288,7 @@ def espace_admin(request):
 def admin_event(request):
     event = Event.objects.all()
     return render(request, 'Administrateur/Events.html', {'Events': event})
+
 def Valider_Event(request,idk):
     event = Event.objects.get(id=idk)
     if event.is_valid:
@@ -290,9 +298,11 @@ def Valider_Event(request,idk):
         messages.info(request, 'Event ' + event.title + ' is valid successfully ')
     event.save()
     return redirect('ticket:AdminEvent')
+
 def client_admin(request):
     client = Client.objects.all()
     return render(request,'Administrateur/Client.html', {'clients':client})
+
 def Organizer_admin(request):
     organizer = Organizer.objects.all()
     return render(request,'Administrateur/Organizer.html', {'organizers': organizer})

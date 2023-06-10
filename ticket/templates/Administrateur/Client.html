@@ -2,5 +2,33 @@
 {% load static %}
 
 {% block content %}
+<table class="table" style="background-color:white" >
+  <thead>
+    
+    <tr>
+      <th scope="col">id</th>
+      <th scope="col">Name</th>
+      <th scope="col">Email</th>
+      <th scope="col">Address</th>
+      <th scope="col">Phone number </th>
+      <th scope="col">Created </th>
+      <th scope="col">updated </th>
 
+    </tr>
+  
+  </thead>
+  <tbody>
+    {% for client in clients %}
+    <tr>
+      <th scope="row">{{client.id}}</th>
+      <td>{{client.user.first_name}} {{client.user.last_name}}</td>
+      <td>{{client.user.email}}</td>
+      <td>{{client.address}}</td>
+      <td>{{client.phone_number}}</td>
+      <td>{{client.created}}</td>
+      <td>{{client.update}}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
 {% endblock  %}

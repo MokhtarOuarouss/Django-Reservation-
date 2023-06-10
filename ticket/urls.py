@@ -31,6 +31,5 @@ urlpatterns = [
     path('administrateur/Clients/', views.client_admin, name='AdminClient'),
     path('administrateur/Organizers/', views.Organizer_admin, name='AdminOrganizer'),
 
-    # path('<slug:slug>/', views.post_detail, name='post_detail'),
-   # path('Events', views.Event_List, name='event_list')
+
 ]

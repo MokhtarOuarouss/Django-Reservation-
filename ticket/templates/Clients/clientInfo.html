@@ -155,12 +155,13 @@
     <div class="modal-dialog">
     
       <!-- Modal content-->
-      <div class="modal-content">
+      <div class="modal-content" style="margin-top: 15%;">
         <div class="modal-header">
+            
           <h3 class="modal-title fs-5">Edit Profile</h3>
         </div>
         <div class="modal-body">
-          <form method="POST" action="{% url 'ticket:ClientupdateProfil'%}">
+            <form method="POST" action="{% url 'ticket:ClientupdateProfil'%}" enctype="multipart/form-data" class=" needs-validation"  novalidate>
             {% csrf_token %}
             <div class="mb-3">
               <label for="name" class="col-form-label">First Name:</label>
@@ -184,7 +185,7 @@
               <input type="text" class="form-control" id="address" name="address" value="{{ client.address }}">
             </div>
             <div class="mb-3">
-              <label for="website" class="col-form-label">Image:</label>
+              <label for="image" class="col-form-label">Image:</label>
               <input type="file" class="form-control" id="website" name="image" >
             </div>
             <div class="modal-footer">

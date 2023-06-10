@@ -117,7 +117,7 @@
                             <p>Location</p>
                         </div>
                         <div class="col">
-                        <p>Action</p>
+                        <p>Status</p>
                         </div>
                     </div>
                     
@@ -136,8 +136,11 @@
                               <label>{{event.location}}</label>
                           </div>
                           <div class="col">
-                            <a href="{{event.id}}"  data-toggle="modal" data-target="#{{event.id}}" style="color: green;" ><i class='fas fa-edit' style='color:red'></i>Edit</a>
-                            <a href="{% url 'ticket:DeleteEvent' id=event.id %}" style="color: #fb1313;" onclick="return confirm('Are you sure you want to delete this event?')">Delete</a>
+                            {% if  event.is_valid %}
+                              <p  style="color: green;" >Valid</p>
+                            {% else %}
+                              <p  style="color: #fb1313;">Not Yet</p>
+                            {% endif %}
                           </div>
                           
                       </div>
@@ -155,7 +158,7 @@
     <div class="modal-dialog">
     
       <!-- Modal content-->
-      <div class="modal-content">
+      <div class="modal-content" style="margin-top: 15%;">
         <div class="modal-header">
           <h3 class="modal-title fs-5">Edit Profile</h3>
         </div>
@@ -204,7 +207,7 @@
 
 <!-- Model for Add Event-->    
       <!-- Modal content-->
-      <div class="modal-content">
+      <div class="modal-content" style="margin-top: 15%;">
         <div class="modal-header">
           <h3 class="modal-title fs-5">Add Event</h3>
         </div>
@@ -277,7 +280,7 @@
 <div class="modal fade" id="{{event.id}}" role="dialog">
   <div class="modal-dialog">
     <!-- Modal content-->
-    <div class="modal-content">
+    <div class="modal-content" style="margin-top: 15%;">
       <div class="modal-header">
         <h3 class="modal-title fs-5">Edit Event</h3>
       </div>

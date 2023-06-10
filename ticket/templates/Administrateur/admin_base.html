@@ -37,7 +37,7 @@
             body {
                 font-family: "Roboto", sans-serif;
                 font-size: 17px;
-                background-color: #fdfdfd;
+                background-color: #C4DFDF;
             }
 
             .shadow {
@@ -322,7 +322,7 @@
                     }
 
                     .wrapper .main_content .info{
-                      margin: 20px;
+                      margin-top: 0;
                       color: #717171;
                       line-height: 25px;
                     }
@@ -366,7 +366,7 @@
 
                         {% if user.is_authenticated %}
                              <li class="nav-item text-black">
-                                <a class="nav-link text-black font-weight-bold"  href="{% url 'ticket:administrateur'%}" >{{user.first_name}} {{user.last_name}}</a>
+                                <a class="nav-link text-black font-weight-bold"  href="{% url 'ticket:administrateur'%}" >Admin : {{user.first_name}} {{user.last_name}}</a>
                             </li>
                             {% if user.is_organizer %}
                                 {% if organizer.image %}
@@ -415,13 +415,12 @@
                 <ul>
                     <li><a href="{% url 'ticket:administrateur'%}"><i class="fas fa-address-card"></i>Home</a></li>
                     <li><a href="{% url 'ticket:AdminEvent'%}"><i class="fas fa-file-alt"></i>Events</a></li>
-                    <li><a href="{% url 'ticket:AdminOrganizer'%}"><i class="fas fa-file-alt"></i>Organizer</a></li>
-                    <li><a href="{% url 'ticket:AdminClient'%}"><i class="fas fa-file-alt"></i>Client</a></li>
-                    <li><a href="{% url 'ticket:Logout'%}"><i class="fas fa-sign-out-alt"></i>Déconnecter</a></li>
+                    <li><a href="{% url 'ticket:AdminOrganizer'%}"><i class="fas fa-file-alt"></i>Organizers</a></li>
+                    <li><a href="{% url 'ticket:AdminClient'%}"><i class="fas fa-file-alt"></i>Clients</a></li>
+                    <li><a href="{% url 'ticket:Logout'%}"><i class="fas fa-sign-out-alt"></i>Log out</a></li>
                 </ul>
             </div>
             <div class="main_content">
-                <div class="header">Bienvenu {{user.first_name}} {{user.last_name}}</div>
                 <div class="info">
                     <div>
                         {% block content %}
