@@ -420,13 +420,14 @@
         <!--------navbar vertical-------->
         <script src="https://kit.fontawesome.com/b99e675b6e.js"></script>
         <br>
-        <div class="wrapper">
-            <div class="sidebar">
+        <div class="wrapper" >
+            <div class="sidebar" style="border-radius: 5%">
                 <ul>
-                    <li><a href="{% url 'ticket:administrateur'%}"><i class="fas fa-address-card"></i>Home</a></li>
-                    <li><a href="{% url 'ticket:AdminEvent'%}"><i class="fas fa-file-alt"></i>Events</a></li>
-                    <li><a href="{% url 'ticket:AdminOrganizer'%}"><i class="fas fa-file-alt"></i>Organizers</a></li>
-                    <li><a href="{% url 'ticket:AdminClient'%}"><i class="fas fa-file-alt"></i>Clients</a></li>
+                    <li style="background-color: #007bff;border-radius: 5% 5% 0 0;color: white"><i class="fa fa-user" aria-hidden="true"></i>&nbsp; Admin : {{user.first_name}} {{user.last_name}}</li>
+                    <li><a href="{% url 'ticket:administrateur'%}"><i class="fa fa-home" aria-hidden="true"></i>&nbsp;Home</a></li>
+                    <li><a href="{% url 'ticket:AdminEvent'%}"><i class="fa fa-calendar-o"></i>&nbsp;Events</a></li>
+                    <li><a href="{% url 'ticket:AdminOrganizer'%}"><i class="fa fa-users" aria-hidden="true"></i>&nbsp;Organizers</a></li>
+                    <li><a href="{% url 'ticket:AdminClient'%}"><i class="fa fa-users" aria-hidden="true"></i>&nbsp;Clients</a></li>
                     <li><a href="{% url 'ticket:Logout'%}"><i class="fas fa-sign-out-alt"></i>Log out</a></li>
                 </ul>
             </div>
