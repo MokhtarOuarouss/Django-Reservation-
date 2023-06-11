@@ -151,36 +151,34 @@ def AddEvents(request):
 
         date, time = date_string.split('T')
         organizer = Organizer.objects.filter(user=user).first()
-        image =request.FILES.get('image')
+        image = request.FILES.get('image')
 
-        msg='A new event "'+ title +'" has been submitted by '+ organizer.user.first_name + " "+ organizer.user.last_name
-        notification = Notification.objects.create(message=msg)
-        notification.save()
-
-        #event = Event.objects.filter(organizer=organizer).first()
-
+        # event = Event.objects.filter(organizer=organizer).first()
 
         event = Event.objects.create(title=title,
                                      date=date,
                                      time=time,
                                      location=location,
                                      city=city,
-                                     type= type,
+                                     type=type,
                                      first_class_price=firstprice,
                                      second_class_price=secondprice,
                                      third_class_price=thirsprice,
                                      description=description,
-                                     image= image,
+                                     image=image,
                                      organizer=organizer)
 
-        
         event.save()
-
+        msg = organizer.user.first_name + ' ' + organizer.user.last_name + ' has submitted a new event. Title: ' + title
+        notification = Notification.objects.create(message=msg, event=event, organizer=organizer)
+        notification.save()
         return redirect("ticket:profil")
 
-def UpdateEvents(request,id):
+
+def UpdateEvents(request, id):
     if request.method == 'POST':
         user = request.user
+        organizer = Organizer.objects.filter(user=user).first()
         event = Event.objects.get(id=id)
         title = request.POST.get('title')
         date_string = request.POST.get('date')
@@ -191,28 +189,43 @@ def UpdateEvents(request,id):
         secondprice = request.POST.get('secondprice')
         thirsprice = request.POST.get('thirsprice')
         description = request.POST.get('description')
-        
+
         date, time = date_string.split('T')
-        #event = Event.objects.filter(organizer=organizer).first()
+        # event = Event.objects.filter(organizer=organizer).first()
 
-
-        event.title=title
-        event.date=date
-        event.time=time
-        event.location=location
-        event.type= type
-        event.city= city
-        event.first_class_price=firstprice
-        event.second_class_price=secondprice
-        event.third_class_price=thirsprice
-        event.description=description
+        event.title = title
+        event.date = date
+        event.time = time
+        event.location = location
+        event.type = type
+        event.city = city
+        event.first_class_price = firstprice
+        event.second_class_price = secondprice
+        event.third_class_price = thirsprice
+        event.description = description
 
         image = request.FILES.get('image')
         if image is not None:
             # Process the uploaded file
             event.image = image
         event.save()
+
+        msg = organizer.user.first_name + ' ' + organizer.user.last_name + ' has updated an event. Title: ' + title
+        notification = Notification.objects.create(message=msg, event=event, organizer=organizer)
+        notification.save()
         return redirect('ticket:profil')
+
+
+def DeleteEvent(request, id):
+    user = request.user
+    organizer = Organizer.objects.filter(user=user).first()
+    event = Event.objects.get(id=id)
+    msg = organizer.user.first_name + ' ' + organizer.user.last_name + ' has updated an event. Title: ' + event.title
+    notification = Notification.objects.create(message=msg, organizer=organizer)
+    notification.save()
+    event.delete()
+
+    return redirect('ticket:Event_List_organizer')
         
 def DeleteEvent(request,id):
     event = Event.objects.get(id=id)
@@ -347,10 +360,10 @@ def espace_admin(request):
     client_count=Client.objects.count()
     notification_count = Notification.objects.filter(is_read=False).count()
     sport_count = Event.objects.filter(type='Sports').count()
-    training_programs_count = Event.objects.filter(type='Sports').count()
-    networking_count = Event.objects.filter(type='Sports').count()
-    music_count = Event.objects.filter(type='Sports').count()
-    festivals_count = Event.objects.filter(type='Sports').count()
+    training_programs_count = Event.objects.filter(type='Training Programs').count()
+    networking_count = Event.objects.filter(type='Networking Events').count()
+    music_count = Event.objects.filter(type='Music').count()
+    festivals_count = Event.objects.filter(type='Festivals/Celebrations').count()
     context={'event_count': event_count,
              'organizer_count': organizer_count,
              'client_count': client_count,
