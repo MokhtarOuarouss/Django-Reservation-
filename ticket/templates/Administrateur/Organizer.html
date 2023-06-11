@@ -3,6 +3,20 @@
 
 {% block content %}
 <table class="table" style="background-color:white" >
+  <caption>
+      <!-- Render pagination links -->
+      <div class="pagination">
+          <span class="step-links">
+              {% if organizers.has_previous %}
+                 <a href="?page={{ organizers.previous_page_number }}">previous</a>
+              {% endif %}
+              <span class="current-page">  &nbsp;&nbsp;page:&nbsp;{{ organizers.number }}</span>
+              {% if organizers.has_next %}
+                 <a href="?page={{ organizers.next_page_number }}">next</a>
+              {% endif %}
+          </span>
+      </div>
+  </caption>
   <thead>
     
     <tr>
