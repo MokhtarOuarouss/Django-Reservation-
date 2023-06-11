@@ -54,26 +54,38 @@
                 <div class="tab-content" id="myTabContent" >
                   <div class="tab-pane fade show active p-3" id="{{event.id}}" role="tabpanel" aria-labelledby="one-tab"style="background-color: gold">
                     <h5 class="card-title">{{event.first_class_price}} DH</h5>
-                    <a href="#" class="btn btn-primary">Add to cart</a>              
+                    <form method="POST" action="{% url 'ticket:AddReservation' id=event.id price=event.first_class_price %}">
+                      {% csrf_token %}
+                      <button type="submit" class="btn btn-primary">Add to cart</button>
+                    </form>
                   </div>
                   <div class="tab-pane fade p-3" id="{{event.id}}+1" role="tabpanel" aria-labelledby="two-tab"style="background-color:silver">
                     <h5 class="card-title">{{event.second_class_price}} DH</h5>
-                    <a href="#" class="btn btn-primary">Add to cart</a>              
+                    <form method="POST" action="{% url 'ticket:AddReservation' id=event.id price=event.second_class_price %}">
+                      {% csrf_token %}
+                      <button type="submit" class="btn btn-primary">Add to cart</button>
+                    </form>
                   </div>
                   <div class="tab-pane fade p-3" id="{{event.id}}+2" role="tabpanel" aria-labelledby="three-tab"style="background-color: white">
                     <h5 class="card-title">{{event.third_class_price}} DH</h5>
-                    <a href="#" class="btn btn-primary">Add to cart</a>              
-                  </div>
+                    <form method="POST" action="{% url 'ticket:AddReservation' id=event.id price=event.third_class_price %}">
+                      {% csrf_token %}
+                      <button type="submit" class="btn btn-primary">Add to cart</button>
+                    </form>
+                   </div>
                 </div>
             </div>
         </div>
         {% endfor %}
         <!--End-->
-        
-      
+
+
 </div>
 </div>
 
 
 
 {%endblock%}
+
+
+

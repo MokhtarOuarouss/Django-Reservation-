@@ -4,7 +4,8 @@ from django.shortcuts import render,redirect
 from django.db.models import Q
 from django.contrib.auth import authenticate, login, logout, get_user_model
 from .models import *
-from django.core.files.uploadedfile import InMemoryUploadedFile
+from django.core.paginator import Paginator
+
 # Create your views here.
 def index(request):
     return render(request,'index.html')
@@ -147,10 +148,15 @@ def AddEvents(request):
         secondprice = request.POST.get('secondprice')
         thirsprice = request.POST.get('thirsprice')
         description = request.POST.get('description')
-        
+
         date, time = date_string.split('T')
         organizer = Organizer.objects.filter(user=user).first()
         image =request.FILES.get('image')
+
+        msg='A new event "'+ title +'" has been submitted by '+ organizer.user.first_name + " "+ organizer.user.last_name
+        notification = Notification.objects.create(message=msg)
+        notification.save()
+
         #event = Event.objects.filter(organizer=organizer).first()
 
 
@@ -276,18 +282,93 @@ def ClientupdateProfil(request):
 
         return redirect("ticket:espace_client")
 
+
+def AddReservation(request, id, price):
+    if request.method == 'POST':
+        user = request.user
+        client = Client.objects.filter(user=user).first()
+        event = Event.objects.filter(id=id).first()
+
+        reservation = Reservation.objects.create(client=client, event=event, price=price)
+        reservation.save()
+
+        return redirect("/")
+
+
+def Cart(request):
+    user = request.user
+    client = Client.objects.filter(user=user).first()
+    reservations = Reservation.objects.filter(client=client)
+
+    total = 0
+    for reservation in reservations:
+        sub_total = reservation.quantity * reservation.price
+        reservation.sub_total = sub_total
+        total += sub_total
+
+    context = {'Reservation': reservations, 'total': total}
+
+    return render(request, 'Clients/Cart.html', context)
+
+
+def updatePrice(request, id, price):
+    if request.method == 'POST':
+        reservation = Reservation.objects.filter(id=id).first()
+
+        reservation.price = price
+        reservation.save()
+
+        return redirect("/Client/Cart")
+
+
+def updateQuantity(request, id):
+    if request.method == 'POST':
+        reservation = Reservation.objects.filter(id=id).first()
+        quantity = int(request.POST.get('quantity', 1))
+        reservation.quantity = quantity
+        reservation.save()
+
+        return redirect("/Client/Cart")
+
+
+def Deletereservation(request, id):
+    reservation = Reservation.objects.get(id=id)
+    reservation.delete()
+    return redirect("/Client/Cart")
+
+
 """----------------Administrator------------"""
 @login_required(login_url="/signin")
 def espace_admin(request):
+    user = request.user
+    admin = Administrator.objects.get(user=user)
     event_count=Event.objects.count()
     organizer_count=Organizer.objects.count()
     client_count=Client.objects.count()
-    context={}
-    return render(request, 'Administrateur/index.html')
+    notification_count = Notification.objects.filter(is_read=False).count()
+    sport_count = Event.objects.filter(type='Sports').count()
+    training_programs_count = Event.objects.filter(type='Sports').count()
+    networking_count = Event.objects.filter(type='Sports').count()
+    music_count = Event.objects.filter(type='Sports').count()
+    festivals_count = Event.objects.filter(type='Sports').count()
+    context={'event_count': event_count,
+             'organizer_count': organizer_count,
+             'client_count': client_count,
+             'count': notification_count,
+             'admin': admin,
+             'sport_count': sport_count,
+             'training_programs_count': training_programs_count,
+             'networking_count': networking_count,
+             'music_count': music_count,
+             'festivals_count': festivals_count,
+    }
+    return render(request, 'Administrateur/index.html', context)
 
 def admin_event(request):
     event = Event.objects.all()
-    return render(request, 'Administrateur/Events.html', {'Events': event})
+    notification_count = Notification.objects.filter(is_read=False).count()
+
+    return render(request, 'Administrateur/Events.html', {'Events': event, 'count': notification_count})
 
 def Valider_Event(request,idk):
     event = Event.objects.get(id=idk)
@@ -301,12 +382,31 @@ def Valider_Event(request,idk):
 
 def client_admin(request):
     client = Client.objects.all()
-    return render(request,'Administrateur/Client.html', {'clients':client})
+    paginator = Paginator(client, per_page=9)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    notification_count = Notification.objects.filter(is_read=False).count()
+    return render(request,'Administrateur/Client.html', {'clients': page_obj, 'count':notification_count})
 
 def Organizer_admin(request):
     organizer = Organizer.objects.all()
-    return render(request,'Administrateur/Organizer.html', {'organizers': organizer})
+    paginator = Paginator(organizer, per_page=9)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    notification_count = Notification.objects.filter(is_read=False).count()
+    return render(request, 'Administrateur/Organizer.html', {'organizers': page_obj, 'count': notification_count})
 
+def read_notification(request):
+    notification = Notification.objects.all()
+    for notification in notification:
+        notification.is_read=True
+        notification.save()
+    notification = Notification.objects.all()
+    return render(request, 'Administrateur/Notification.html', {'notifications': notification})
+def delete_notification(request, pk):
+    notification = Notification.objects.get(id=pk)
+    notification.delete()
+    return redirect('ticket:Notifications')
 def base(request):
 
     return render(request, 'base.html')

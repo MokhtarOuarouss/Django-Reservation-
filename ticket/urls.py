@@ -1,7 +1,20 @@
 from django.contrib import admin
-from django.urls import path
+from django.urls import path,register_converter
 from . import views
 app_name = 'ticket'
+
+
+class DecimalConverter:
+    regex = r'[-+]?\d*\.\d+|\d+'
+
+    def to_python(self, value):
+        return float(value)
+
+    def to_url(self, value):
+        return str(value)
+
+
+register_converter(DecimalConverter, 'decimal')  # Register the custom converter
 
 urlpatterns = [
     
@@ -10,12 +23,18 @@ urlpatterns = [
     #path('contact', views.contact_form, name='f_contact'),
     path('signup', views.signup, name='signup'),
     path('signin/', views.signin, name='signin'),
-    path('profil/', views.Profil, name='profil'),
-    path('Organizer', views.espace_organizer, name='Organizer'),
+    path('Logout',views.Logout, name="Logout"),
+
     path('Client', views.espace_client, name='espace_client'),
     path('Client/updateProfil', views.ClientupdateProfil, name='ClientupdateProfil'),
-    path('administrateur', views.espace_admin, name='administrateur'),
-    path('Logout',views.Logout, name="Logout"),
+    path('Client/AddReservation/<int:id>/<decimal:price>/', views.AddReservation, name='AddReservation'),
+    path('Client/updatePrice/<int:id>/<decimal:price>/', views.updatePrice, name='updatePrice'),
+    path('Client/updateQuantity/<int:id>', views.updateQuantity, name='updateQuantity'),
+    path('Client/Deletereservation/<int:id>', views.Deletereservation, name='Deletereservation'),
+    path('Client/Cart', views.Cart, name='Cart'),
+
+    path('profil/', views.Profil, name='profil'),
+    path('Organizer', views.espace_organizer, name='Organizer'),
     path('profil/updateProfil', views.updateProfil, name='updateprofil'),
     path('profil/AddEvents', views.AddEvents, name='AddEvents'),
     path('profil/updateImageProfil', views.updateImageProfil, name='updateImageProfil'),
@@ -26,10 +45,12 @@ urlpatterns = [
     path('organizer/EventrInfo/<int:id>', views.EventrInfo, name='EventrInfo'),
     path('/Search', views.Search, name='Search'),
 
+    path('administrateur', views.espace_admin, name='administrateur'),
     path('administrateur/events/', views.admin_event, name='AdminEvent'),
     path('administrateur/events/validation/event/<int:idk>/', views.Valider_Event, name='EventValid'),
     path('administrateur/Clients/', views.client_admin, name='AdminClient'),
     path('administrateur/Organizers/', views.Organizer_admin, name='AdminOrganizer'),
-
+    path('administrateur/Notification/New/', views.read_notification, name='Notifications'),
+    path('administrateur/Notification/<int:pk>/delete/', views.delete_notification, name='delete_notification'),
 
 ]
