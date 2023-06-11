@@ -1,0 +1,111 @@
+{%extends "base.html" %}
+{% load static %}
+
+<meta name='viewport' content='width=device-width, initial-scale=1'>
+
+
+<link rel="stylesheet" href="{% static 'css/cart.css' %}">
+
+
+{% block content %}
+
+
+<div class="container px-3 my-5 clearfix">
+    <!-- Shopping cart table -->
+    <div class="card">
+        <div class="card-header">
+            <h2>Shopping Cart</h2>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+              <table class="table table-bordered m-0">
+                <thead>
+                  <tr>
+                    <!-- Set columns width -->
+                    <th class="text-center py-3 px-4" style="min-width: 400px;">Event Name &amp; Details</th>
+                    <th class="text-right py-3 px-4" style="width: 100px;">Price</th>
+                    <th class="text-center py-3 px-4" style="width: 120px;">Quantity</th>
+                    <th class="text-right py-3 px-4" style="width: 100px;">Total</th>
+                    <th class="text-center align-middle py-3 px-0" style="width: 40px;"><a href="#" class="shop-tooltip float-none text-light" title="" data-original-title="Clear cart"><i class="ino ion-md-trash"></i></a></th>
+                  </tr>
+                </thead>
+                <tbody>
+                {% for reservation in Reservation %}
+                  <tr>
+                    <td class="p-4">
+                      <div class="media align-items-center">
+                        <img src="{{reservation.event.image.url}}" class="d-block ui-w-40 ui-bordered mr-4" style="width:220px;height:200px">
+                        <div class="media-body">
+                          <a href="{% url 'ticket:EventrInfo' id=reservation.event.id %}" type="submit" class="d-block text-dark">{{reservation.event.title}}</a>
+                          <div class="d-flex flex-row">
+                            
+                            <form method="POST" action="{% url 'ticket:updatePrice' id=reservation.id price=reservation.event.first_class_price %}">
+                                {% csrf_token %}
+                                <div class="p-2"><button  type="submit" class="btn btn-primary" style="background-color:gold;color:black">Gold</button></div>
+                            </form> 
+                            <form method="POST" action="{% url 'ticket:updatePrice' id=reservation.id price=reservation.event.second_class_price %}">
+                                {% csrf_token %}
+                                <div class="p-2"><button  type="submit" class="btn btn-primary" style="background-color:silver;color:black">Selver</button></div>
+                            </form> 
+                            <form method="POST" action="{% url 'ticket:updatePrice' id=reservation.id price=reservation.event.third_class_price %}">
+                                {% csrf_token %}
+                                <div class="p-2"><button  type="submit" class="btn btn-primary" style="background-color:white;color:black">Scopper</button></div>
+                            </form>  
+
+                            </div>
+                        </div>
+                      </div>
+                    </td>
+                    <td class="text-right font-weight-semibold align-middle p-12">{{ reservation.price }} DH</td>
+                    <td class="align-middle p-4">
+                        
+                        <form method="POST" action="{% url 'ticket:updateQuantity' id=reservation.id  %}">
+                            {% csrf_token %}
+                            <input type="number" class="form-control text-center" name="quantity" min=1  value="{{ reservation.quantity }}" >
+                            <div class="p-2"><button  type="submit" class="btn btn-primary" style="background-color:green;color:white">update</button></div>
+                        </form> 
+                    </td>
+                    
+                    <td class="text-right font-weight-semibold align-middle p-4">{{ reservation.sub_total }} DH</td>
+                    <td class="text-center align-middle px-0">
+                        <form method="POST" action="{% url 'ticket:Deletereservation' id=reservation.id  %}">
+                            {% csrf_token %}
+                            <div class="p-2">
+                                <button  type="submit" class="shop-tooltip close float-none text-danger" title="" data-original-title="Remove">x</button>
+                            </div>
+                        </form> 
+                    </td>
+                  </tr>
+
+                  
+                  {% endfor %}
+        
+                  
+        
+                </tbody>
+              </table>
+            </div>
+            <!-- / Shopping cart table -->
+        
+            <div class="d-flex flex-wrap justify-content-between align-items-center pb-4">
+              <div class="mt-4"></div>
+              <div class="d-flex">
+                <div class="text-right mt-4 mr-5"></div>
+                <div class="text-right mt-4">
+                  <label class="text-muted font-weight-normal m-0">Total price</label>
+                  <div class="text-large"><strong>{{ total }}</strong></div>
+                </div>
+              </div>
+            </div>
+        
+            <div class="float-right">
+              <a href="{% url 'ticket:event_list' %}" class="btn btn-lg btn-default md-btn-flat mt-2 mr-3">Back to shopping</a>
+              <a href="{% url 'ticket:event_list' %}" class="btn btn-lg btn-primary mt-2">Checkout</a>
+            </div>
+        
+          </div>
+      </div>
+  </div>
+
+
+{%endblock%}
