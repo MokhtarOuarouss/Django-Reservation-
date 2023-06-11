@@ -80,7 +80,7 @@ class Reservation(models.Model):
 
 class Notification(models.Model):
     event = models.ForeignKey(Event, on_delete=models.CASCADE, null=True, blank=True)
-    organizer =  models.ForeignKey(Organizer, on_delete=models.CASCADE, null=True, blank=True)
+    organizer = models.ForeignKey(Organizer, on_delete=models.CASCADE, null=True, blank=True)
     message = models.TextField()
     date = models.DateTimeField(auto_now=True)
     is_read = models.BooleanField(default=False)
