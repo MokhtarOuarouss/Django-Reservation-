@@ -1,7 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser, User
 
-
 # Create your models here.
 
 
@@ -13,9 +12,9 @@ class User(AbstractUser):
 
 class Client(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, blank=True, null=True)
-    image = models.ImageField(upload_to='Client_images', null=True, blank=True)
-    phone_number = models.CharField(max_length=20, null=True, blank=True)
-    address = models.CharField(max_length=200, null=True, blank=True)
+    image = models.ImageField(upload_to='Client_images',null=True,blank=True)
+    phone_number = models.CharField(max_length=20,null=True,blank=True)
+    address = models.CharField(max_length=200,null=True,blank=True)
     update = models.DateTimeField(auto_now=True)
     created = models.DateTimeField(auto_now_add=True)
 
@@ -23,29 +22,21 @@ class Client(models.Model):
 
 
 class Organizer(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, blank=True, null=True)
-    image = models.ImageField(upload_to='Organizer_images', null=True, blank=True)
-    phone_number = models.CharField(max_length=20, null=True, blank=True)
-    company_name = models.CharField(max_length=100, null=True, blank=True)
-    address = models.CharField(max_length=200, null=True, blank=True)
-    website = models.URLField(blank=True, null=True)
+    user = models.OneToOneField(User,on_delete=models.CASCADE,blank=True,null=True)
+    image = models.ImageField(upload_to='Organizer_images',null=True,blank=True)
+    phone_number = models.CharField(max_length=20,null=True,blank=True)
+    company_name = models.CharField(max_length=100,null=True,blank=True)
+    address = models.CharField(max_length=200,null=True,blank=True)
+    website = models.URLField(blank=True,null=True)
     update = models.DateTimeField(auto_now=True)
     created = models.DateTimeField(auto_now_add=True)
 
     objects = models.Manager()
 
     def __str__(self):
-        return "Organizer Name : " + self.user.first_name
+       return "Organizer Name : "+self.user.first_name
+   
 
-
-class Administrator(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True, blank=True)
-    image = models.ImageField(upload_to='administrator/profile', default='Default/user.png')
-
-    objects = models.Manager()
-
-    def __str__(self):
-        return "Administrator Name : " + self.user.first_name
 
 
 class Event(models.Model):
@@ -54,32 +45,23 @@ class Event(models.Model):
     date = models.DateField()
     time = models.TimeField()
     location = models.CharField(max_length=100)
-    city = models.CharField(max_length=100, null=True, blank=True)
+    city = models.CharField(max_length=100,null=True,blank=True)
     type = models.CharField(max_length=100)
-    image = models.ImageField(upload_to='Events_images', null=True, blank=True)
+    image = models.ImageField(upload_to='Events_images',null=True,blank=True)
     organizer = models.ForeignKey(Organizer, on_delete=models.CASCADE)
     first_class_price = models.DecimalField(max_digits=8, decimal_places=2)
     second_class_price = models.DecimalField(max_digits=8, decimal_places=2)
     third_class_price = models.DecimalField(max_digits=8, decimal_places=2)
-    is_valid = models.BooleanField(default=False, null=True)
+    is_valid=models.BooleanField(default=False, null=True)
 
     objects = models.Manager()
 
     def __str__(self):
-        return "Event Title : " + self.title
-
-
+       return "Event Title : "+self.title
+    
 class Reservation(models.Model):
     event = models.ForeignKey(Event, on_delete=models.CASCADE)
     organizer = models.ForeignKey(Organizer, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField()
-
-    objects = models.Manager()
-
-
-class Notification(models.Model):
-    message = models.TextField()
-    date = models.DateTimeField(auto_now=True)
-    is_read = models.BooleanField(default=False)
 
     objects = models.Manager()

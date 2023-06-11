@@ -3,20 +3,6 @@
 
 {% block content %}
 <table class="table" style="background-color:white" >
-    <caption>
-      <!-- Render pagination links -->
-      <div class="pagination">
-          <span class="step-links">
-              {% if clients.has_previous %}
-                  <a href="?page={{ clients.previous_page_number }}">previous</a>
-              {% endif %}
-              <span class="current-page"> &nbsp;&nbsp;page:&nbsp;{{ clients.number }}</span>
-              {% if clients.has_next %}
-                  <a href="?page={{ clients.next_page_number }}">next</a>
-              {% endif %}
-          </span>
-      </div>
-  </caption>
   <thead>
     
     <tr>

@@ -30,7 +30,6 @@ urlpatterns = [
     path('administrateur/events/validation/event/<int:idk>/', views.Valider_Event, name='EventValid'),
     path('administrateur/Clients/', views.client_admin, name='AdminClient'),
     path('administrateur/Organizers/', views.Organizer_admin, name='AdminOrganizer'),
-    path('administrateur/Notification/New/', views.read_notification, name='Notifications'),
-    path('administrateur/Notification/<int:pk>/delete/', views.delete_notification, name='delete_notification'),
+
 
 ]

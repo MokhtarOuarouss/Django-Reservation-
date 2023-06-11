@@ -331,20 +331,6 @@
                       margin-bottom: 20px;
                     }
                     /**************************************/
-                    /* Notification */
-                    .pending{
-                        position: absolute;
-                        border-radius:50%;
-                        font-size: 18px;
-                        display: flex;
-                        width: 20px;
-                        height: 20px;
-                        justify-content: center;
-                        margin-top: -32px;
-                        margin-left: 10px;
-                        background-color: #f60505;
-
-                    }
 
         </style>
 
@@ -379,21 +365,25 @@
                     <ul class="navbar-nav ml-auto">
 
                         {% if user.is_authenticated %}
-                             <li >
-                                 <a class="nav-link " href="{% url 'ticket:Notifications' %}" >
-                                     <i class="bi bi-bell-fill">
-                                         {% if count > 0 %}
-                                         <span class="pending">{{ count }}</span>
-                                         {% endif %}
-                                     </i>
-                                 </a>
-                             </li>
                              <li class="nav-item text-black">
                                 <a class="nav-link text-black font-weight-bold"  href="{% url 'ticket:administrateur'%}" >Admin : {{user.first_name}} {{user.last_name}}</a>
                             </li>
-
+                            {% if user.is_organizer %}
+                                {% if organizer.image %}
+                                        <img src="{{ organizer.image.url }}" class="rounded-circle" alt="Profile Image" width="45" height="45">
+                                {% else %}
+                                         <img src="{% static 'image/user.png' %}" class="rounded-circle" alt="Bootstrap" width="45" height="45">
+                                {% endif %}
+                            {% endif %}
+                            {% if user.is_client %}
+                                {% if client.image %}
+                                        <img src="{{ client.image.url }}" class="rounded-circle" alt="Profile Image" width="45" height="45">
+                                {% else %}
+                                         <img src="{% static 'image/user.png' %}" class="rounded-circle" alt="Default Image" width="45" height="45">
+                                {% endif %}
+                            {% endif %}
                             {% if user.is_administrateur %}
-                                {% if admin.image.url != non %}
+                                {% if admin.image %}
                                         <img src="{{ admin.image.url }}" class="rounded-circle" alt="Profile Image" width="45" height="45">
                                 {% else %}
                                          <img src="{% static 'image/user.png' %}" class="rounded-circle" alt="Default Image" width="45" height="45">

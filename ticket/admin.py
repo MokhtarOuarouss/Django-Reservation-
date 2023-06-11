@@ -4,8 +4,5 @@ from .models import *
 admin.site.register(User)
 admin.site.register(Client)
 admin.site.register(Organizer)
-admin.site.register(Administrator)
 admin.site.register(Event)
 admin.site.register(Reservation)
-admin.site.register(Notification)
-
