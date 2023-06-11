@@ -1,4 +1,5 @@
-{%extends "Administrateur/admin_base.html" %}
+
+ {%extends "Administrateur/admin_base.html" %}
 {% block content %}
 {% load static %}
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -9,10 +10,24 @@
 {% for notification in notifications %}
 
 <div class="w3-container w3-content">
-    <div class="w3-panel w3-white w3-card w3-display-container">
+
+    <div class="w3-panel w3-white w3-card w3-display-container" >
+        <div class="w3-row" >
+            <div class="w3-col" style="width:15%;">
+                <img style="width: 90px; height: 90px; border-radius: 100%; " class="card-img-top" id="imEvent" src="{{notification.organizer.image.url}}">
+
+            </div>
+            <div class="w3-col" style="width:80%; padding-top : 20px">
+                <p>{{notification.message}}</p>
+                <p>{{notification.date}}
+                    {% if notification.event.id %}
+                        <b> | <a href="{% url 'ticket:EventInfo_byAdmin' id=notification.event.id %}">Link</a></b>
+                    {% endif %}
+                </p>
+            </div>
+
+        </div>
         <span class="w3-display-topright w3-padding w3-hover-red"><a href="{% url 'ticket:delete_notification' pk=notification.id %}">X</a></span>
-       <p>{{notification.message}}</p>
-       <p >{{notification.date}}</p>
     </div>
 </div>
 {% endfor %}

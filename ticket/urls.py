@@ -1,6 +1,7 @@
 from django.contrib import admin
-from django.urls import path,register_converter
+from django.urls import path, register_converter
 from . import views
+
 app_name = 'ticket'
 
 
@@ -17,13 +18,13 @@ class DecimalConverter:
 register_converter(DecimalConverter, 'decimal')  # Register the custom converter
 
 urlpatterns = [
-    
+
     path('', views.Event_List, name='event_list'),
-    #path('contact', views.d_contact, name='d_contact'),
-    #path('contact', views.contact_form, name='f_contact'),
+    # path('contact', views.d_contact, name='d_contact'),
+    # path('contact', views.contact_form, name='f_contact'),
     path('signup', views.signup, name='signup'),
     path('signin/', views.signin, name='signin'),
-    path('Logout',views.Logout, name="Logout"),
+    path('Logout', views.Logout, name="Logout"),
 
     path('Client', views.espace_client, name='espace_client'),
     path('Client/updateProfil', views.ClientupdateProfil, name='ClientupdateProfil'),
@@ -45,12 +46,21 @@ urlpatterns = [
     path('organizer/EventrInfo/<int:id>', views.EventrInfo, name='EventrInfo'),
     path('/Search', views.Search, name='Search'),
 
-    path('administrateur', views.espace_admin, name='administrateur'),
-    path('administrateur/events/', views.admin_event, name='AdminEvent'),
-    path('administrateur/events/validation/event/<int:idk>/', views.Valider_Event, name='EventValid'),
-    path('administrateur/Clients/', views.client_admin, name='AdminClient'),
-    path('administrateur/Organizers/', views.Organizer_admin, name='AdminOrganizer'),
-    path('administrateur/Notification/New/', views.read_notification, name='Notifications'),
-    path('administrateur/Notification/<int:pk>/delete/', views.delete_notification, name='delete_notification'),
+    path('administrator', views.espace_admin, name='administrateur'),
+    path('administrator/events/', views.admin_event, name='AdminEvent'),
+    path('administrator/events/validation/event/<int:idk>/', views.Valider_Event, name='EventValid'),
+    path('administrator/Clients/', views.client_admin, name='AdminClient'),
+    path('administrator/Organizers/', views.Organizer_admin, name='AdminOrganizer'),
+    path('administrator/Notification/New/', views.read_notification, name='Notifications'),
+    path('administrator/Notification/<int:pk>/delete/', views.delete_notification, name='delete_notification'),
+    path('administrator/EventrInfo/<int:id>', views.EventInfo_byAdmin, name='EventInfo_byAdmin'),
 
 ]
+
+
+
+
+
+
+
+

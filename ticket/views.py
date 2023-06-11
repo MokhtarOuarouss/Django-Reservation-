@@ -1,33 +1,36 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render,redirect
+from django.shortcuts import render, redirect
 from django.db.models import Q
 from django.contrib.auth import authenticate, login, logout, get_user_model
 from .models import *
 from django.core.paginator import Paginator
 
+
 # Create your views here.
 def index(request):
-    return render(request,'index.html')
-#Show Event where is_valid = True
+    return render(request, 'index.html')
+
+
+# Show Event where is_valid = True
 def Event_List(request):
     context = {'Events': Event.objects.filter(is_valid=True)}
     return render(request, 'Events.html', context)
 
-#Search by title and by city
+
+# Search by title and by city
 def Search(request):
     query = request.GET.get('search')  # Get the search query from the request
 
     if query:
-         results = Event.objects.filter(Q(title__icontains=query) | Q(city__icontains=query) ,is_valid=True)
-          # Perform the search using the 'icontains' lookup
+        results = Event.objects.filter(Q(title__icontains=query) | Q(city__icontains=query), is_valid=True)
+        # Perform the search using the 'icontains' lookup
     else:
         results = Event.objects.none()  # Empty queryset when no search query is provided
     return render(request, 'Events.html', {'Events': results, 'query': query})
 
 
-
-#ORGANIZER 
+# ORGANIZER
 
 
 def signup(request):
@@ -54,8 +57,8 @@ def signup(request):
             users = authenticate(request, username=email, password=password)
             login(request, users)
             if type == 'organizer':
-                utilisateur.is_organizer=True
-                utilisateur.is_client=False
+                utilisateur.is_organizer = True
+                utilisateur.is_client = False
                 organizer = Organizer.objects.create(user=utilisateur)
                 organizer.save()
                 utilisateur.save()
@@ -67,6 +70,7 @@ def signup(request):
                 utilisateur.save()
                 return redirect('ticket:espace_client')
     return render(request, 'Inscription.html')
+
 
 def signin(request):
     if request.method == 'POST':
@@ -82,6 +86,8 @@ def signin(request):
             else:
                 return redirect('ticket:administrateur')
     return render(request, 'Login.html')
+
+
 @login_required(login_url="/signin")
 def Logout(request):
     logout(request)
@@ -90,6 +96,7 @@ def Logout(request):
 
 """---------------------Organizer------------------"""
 
+
 @login_required(login_url="/signin")
 def Profil(request):
     user = request.user
@@ -97,6 +104,7 @@ def Profil(request):
     events = Event.objects.filter(organizer=organizer)
     context = {'organizer': organizer, 'Events': events}
     return render(request, 'profil.html', context)
+
 
 @login_required(login_url="/signin")
 def updateProfil(request):
@@ -122,6 +130,7 @@ def updateProfil(request):
 
         return redirect("ticket:profil")
 
+
 def updateImageProfil(request):
     if request.method == 'POST':
         image = request.FILES.get('image')
@@ -130,10 +139,11 @@ def updateImageProfil(request):
 
         if image is not None:
             organizer.image = image
-        
+
         organizer.save()
-        
+
     return redirect("ticket:profil")
+
 
 @login_required(login_url="/signin")
 def AddEvents(request):
@@ -220,17 +230,13 @@ def DeleteEvent(request, id):
     user = request.user
     organizer = Organizer.objects.filter(user=user).first()
     event = Event.objects.get(id=id)
-    msg = organizer.user.first_name + ' ' + organizer.user.last_name + ' has updated an event. Title: ' + event.title
+    msg = organizer.user.first_name + ' ' + organizer.user.last_name + ' has Delete an event. Title: ' + event.title
     notification = Notification.objects.create(message=msg, organizer=organizer)
     notification.save()
     event.delete()
 
     return redirect('ticket:Event_List_organizer')
-        
-def DeleteEvent(request,id):
-    event = Event.objects.get(id=id)
-    event.delete()
-    return redirect('ticket:Event_List_organizer')
+
 
 def Event_List_organizer(request):
     user = request.user
@@ -247,10 +253,12 @@ def OrganizerInfo(request, id):
 
     return render(request, 'OrganizerInfo.html', context)
 
+
 def EventrInfo(request, id):
     event = Event.objects.get(id=id)
-    context = { 'event': event}
+    context = {'event': event}
     return render(request, 'Eventinfo.html', context)
+
 
 def espace_organizer(request):
     user = request.user
@@ -259,19 +267,22 @@ def espace_organizer(request):
 
 
 """----------------Clients------------------ """
+
+
 @login_required(login_url="/signin")
 def espace_client(request):
     user = request.user
     client = Client.objects.filter(user=user).first()
-    return render(request, 'Clients/clientInfo.html',{'client': client})
+    return render(request, 'Clients/clientInfo.html', {'client': client})
+
 
 def ClientupdateProfil(request):
-    if request.method == 'POST' :
+    if request.method == 'POST':
         user = request.user
         Firstname = request.POST.get('first_name')
         Lastname = request.POST.get('last_name')
         PhoneNumber = request.POST.get('phone_number')
-        
+
         address = request.POST.get('address')
 
         client = Client.objects.filter(user=user).first()
@@ -281,10 +292,10 @@ def ClientupdateProfil(request):
         client.address = address
 
         image = request.FILES.get('image')
-        
+
         if image is not None:
             # Process the uploaded file
-            #client.image.delete()
+            # client.image.delete()
             client.image = image
         """
         if isinstance(image, InMemoryUploadedFile):
@@ -351,31 +362,40 @@ def Deletereservation(request, id):
 
 
 """----------------Administrator------------"""
+
+
 @login_required(login_url="/signin")
 def espace_admin(request):
     user = request.user
     admin = Administrator.objects.get(user=user)
-    event_count=Event.objects.count()
-    organizer_count=Organizer.objects.count()
-    client_count=Client.objects.count()
+    event_count = Event.objects.count()
+    organizer_count = Organizer.objects.count()
+    client_count = Client.objects.count()
     notification_count = Notification.objects.filter(is_read=False).count()
     sport_count = Event.objects.filter(type='Sports').count()
     training_programs_count = Event.objects.filter(type='Training Programs').count()
     networking_count = Event.objects.filter(type='Networking Events').count()
     music_count = Event.objects.filter(type='Music').count()
     festivals_count = Event.objects.filter(type='Festivals/Celebrations').count()
-    context={'event_count': event_count,
-             'organizer_count': organizer_count,
-             'client_count': client_count,
-             'count': notification_count,
-             'admin': admin,
-             'sport_count': sport_count,
-             'training_programs_count': training_programs_count,
-             'networking_count': networking_count,
-             'music_count': music_count,
-             'festivals_count': festivals_count,
-    }
+    context = {'event_count': event_count,
+               'organizer_count': organizer_count,
+               'client_count': client_count,
+               'count': notification_count,
+               'admin': admin,
+               'sport_count': sport_count,
+               'training_programs_count': training_programs_count,
+               'networking_count': networking_count,
+               'music_count': music_count,
+               'festivals_count': festivals_count,
+               }
     return render(request, 'Administrateur/index.html', context)
+
+
+def EventInfo_byAdmin(request, id):
+    event = Event.objects.get(id=id)
+    context = {'event': event}
+    return render(request, 'Administrateur/Eventinfo.html', context)
+
 
 def admin_event(request):
     event = Event.objects.all()
@@ -383,15 +403,17 @@ def admin_event(request):
 
     return render(request, 'Administrateur/Events.html', {'Events': event, 'count': notification_count})
 
-def Valider_Event(request,idk):
+
+def Valider_Event(request, idk):
     event = Event.objects.get(id=idk)
     if event.is_valid:
-        messages.info(request, 'Event ' + event.title + ' déja  valider ')
+        messages.info(request, 'Event ' + event.title + ' already  valid ')
     else:
         event.is_valid = True
         messages.info(request, 'Event ' + event.title + ' is valid successfully ')
     event.save()
     return redirect('ticket:AdminEvent')
+
 
 def client_admin(request):
     client = Client.objects.all()
@@ -399,7 +421,8 @@ def client_admin(request):
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     notification_count = Notification.objects.filter(is_read=False).count()
-    return render(request,'Administrateur/Client.html', {'clients': page_obj, 'count':notification_count})
+    return render(request, 'Administrateur/Client.html', {'clients': page_obj, 'count': notification_count})
+
 
 def Organizer_admin(request):
     organizer = Organizer.objects.all()
@@ -409,17 +432,26 @@ def Organizer_admin(request):
     notification_count = Notification.objects.filter(is_read=False).count()
     return render(request, 'Administrateur/Organizer.html', {'organizers': page_obj, 'count': notification_count})
 
+
 def read_notification(request):
     notification = Notification.objects.all()
     for notification in notification:
-        notification.is_read=True
+        notification.is_read = True
         notification.save()
     notification = Notification.objects.all()
     return render(request, 'Administrateur/Notification.html', {'notifications': notification})
+
+
 def delete_notification(request, pk):
     notification = Notification.objects.get(id=pk)
     notification.delete()
     return redirect('ticket:Notifications')
-def base(request):
 
+
+def base(request):
     return render(request, 'base.html')
+
+
+
+
+
