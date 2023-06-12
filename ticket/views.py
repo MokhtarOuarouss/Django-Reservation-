@@ -29,6 +29,14 @@ def Search(request):
         results = Event.objects.none()  # Empty queryset when no search query is provided
     return render(request, 'Events.html', {'Events': results, 'query': query})
 
+def SearchByCategory(request,search):  # Get the search query from the request
+
+
+    results = Event.objects.filter(Q(type=search) , is_valid=True)
+        # Perform the search using the 'icontains' lookup
+
+    return render(request, 'Events.html', {'Events': results})
+
 
 # ORGANIZER
 

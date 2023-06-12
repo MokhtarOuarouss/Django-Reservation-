@@ -33,6 +33,9 @@ urlpatterns = [
     path('Client/updateQuantity/<int:id>', views.updateQuantity, name='updateQuantity'),
     path('Client/Deletereservation/<int:id>', views.Deletereservation, name='Deletereservation'),
     path('Client/Cart', views.Cart, name='Cart'),
+    path('/Search', views.Search, name='Search'),
+    path('Search/<str:search>', views.SearchByCategory, name='SearchByCategory'),
+
 
     path('profil/', views.Profil, name='profil'),
     path('Organizer', views.espace_organizer, name='Organizer'),
@@ -44,7 +47,7 @@ urlpatterns = [
     path('profil/Events', views.Event_List_organizer, name='Event_List_organizer'),
     path('organizer/OrganizerInfo/<int:id>', views.OrganizerInfo, name='OrganizerInfo'),
     path('organizer/EventrInfo/<int:id>', views.EventrInfo, name='EventrInfo'),
-    path('/Search', views.Search, name='Search'),
+    
 
     path('administrator', views.espace_admin, name='administrateur'),
     path('administrator/events/', views.admin_event, name='AdminEvent'),
