@@ -11,6 +11,16 @@
       margin-left: 10px;
       font-size: 16px;
       color: green;
+
+    }
+    #msg {
+        background-color: #10da3e;
+        color: black;
+        padding-top: 20px;
+        padding-bottom: 20px;
+        margin-top: 20px;
+        font-size: larger;
+        text-align: center;
     }
 
 </style>
@@ -18,7 +28,9 @@
 <div class="container">
     <div >
             {% for msg in messages %}
-            <p style="background-color:#7FFFD4;color:black;padding-left:50px;">{{msg}} </p>
+            <p id="msg" style="background-color: #10da3e;color: black; padding-top: 20px; padding-bottom: 20px; margin-top: 20px;font-size: larger; text-align: center;">
+                {{msg}} 
+            </p>
             {% endfor %}
         <br>
     </div>
@@ -58,7 +70,7 @@
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" id="three-tab" data-toggle="tab" href="#{{ event.id }}+2" role="tab"
-                                    aria-controls="Three" aria-selected="false">Copper</a>
+                                    aria-controls="Three" aria-selected="false">Scopper</a>
                             </li>
                         </ul>
                     </div>

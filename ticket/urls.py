@@ -36,7 +36,7 @@ urlpatterns = [
 
     path('profil/', views.Profil, name='profil'),
     path('Organizer', views.espace_organizer, name='Organizer'),
-    path('profil/updateProfil', views.updateProfil, name='updateprofil'),
+    path('profil/updateprofil', views.updateprofil, name='updateprofil'),
     path('profil/AddEvents', views.AddEvents, name='AddEvents'),
     path('profil/updateImageProfil', views.updateImageProfil, name='updateImageProfil'),
     path('profil/UpdateEvents/<int:id>', views.UpdateEvents, name='UpdateEvents'),

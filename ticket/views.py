@@ -107,7 +107,7 @@ def Profil(request):
 
 
 @login_required(login_url="/signin")
-def updateProfil(request):
+def updateprofil(request):
     if request.method == 'POST':
         user = request.user
         firstname = request.POST.get('first_name')
@@ -116,6 +116,7 @@ def updateProfil(request):
         company = request.POST.get('company_name')
         address = request.POST.get('address')
         website = request.POST.get('website')
+        image = request.FILES.get('image')
 
         organizer = Organizer.objects.filter(user=user).first()
         user.first_name = firstname
@@ -124,6 +125,7 @@ def updateProfil(request):
         organizer.address = address
         organizer.website = website
         organizer.company_name = company
+        organizer.image = image
 
         user.save()
         organizer.save()
@@ -198,21 +200,23 @@ def UpdateEvents(request, id):
         firstprice = request.POST.get('firstprice')
         secondprice = request.POST.get('secondprice')
         thirsprice = request.POST.get('thirsprice')
+        
         description = request.POST.get('description')
-
-        date, time = date_string.split('T')
+        if date_string:
+            date, time = date_string.split('T')
+            event.date = date
+            event.time = time
         # event = Event.objects.filter(organizer=organizer).first()
 
-        event.title = title
-        event.date = date
-        event.time = time
+        event.title = title        
         event.location = location
         event.type = type
         event.city = city
         event.first_class_price = firstprice
         event.second_class_price = secondprice
         event.third_class_price = thirsprice
-        event.description = description
+        if description :
+            event.description = description
 
         image = request.FILES.get('image')
         if image is not None:
