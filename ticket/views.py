@@ -5,6 +5,7 @@ from django.db.models import Q
 from django.contrib.auth import authenticate, login, logout, get_user_model
 from .models import *
 from django.core.paginator import Paginator
+from datetime import datetime, timedelta
 
 
 # Create your views here.
@@ -13,8 +14,24 @@ def index(request):
 
 
 # Show Event where is_valid = True
+
+
 def Event_List(request):
-    context = {'Events': Event.objects.filter(is_valid=True)}
+    current_date = datetime.now().date()
+    current_time = datetime.now().time()
+    
+
+    # Calculate the time after 24 hours
+    next_day = (datetime.now() + timedelta(days=1)).date()
+    
+    events = Event.objects.filter(is_valid=True, date__gte=current_date)
+    ev_less_1_day = events.filter(is_valid=True, date__lte=next_day,)
+
+    context = {
+        'Events': events,
+        'ev_less_1_day': ev_less_1_day,
+    }
+
     return render(request, 'Events.html', context)
 
 
@@ -27,15 +44,32 @@ def Search(request):
         # Perform the search using the 'icontains' lookup
     else:
         results = Event.objects.none()  # Empty queryset when no search query is provided
-    return render(request, 'Events.html', {'Events': results, 'query': query})
+    current_date = datetime.now().date()
+    
+
+    # Calculate the time after 24 hours
+    next_day = (datetime.now() + timedelta(days=1)).date()
+
+    events = Event.objects.filter(is_valid=True, date__gte=current_date)
+    ev_less_1_day = events.filter(is_valid=True, date__lte=next_day,)
+
+    
+    return render(request, 'Events.html', {'Events': results, 'query': query, 'ev_less_1_day': ev_less_1_day})
 
 def SearchByCategory(request,search):  # Get the search query from the request
 
 
     results = Event.objects.filter(Q(type=search) , is_valid=True)
         # Perform the search using the 'icontains' lookup
+    current_date = datetime.now().date()
+    # Calculate the time after 24 hours
+    next_day = (datetime.now() + timedelta(days=1)).date()
 
-    return render(request, 'Events.html', {'Events': results})
+    events = Event.objects.filter(is_valid=True, date__gte=current_date)
+    ev_less_1_day = events.filter(is_valid=True, date__lte=next_day,)
+
+    
+    return render(request, 'Events.html', {'Events': results,'ev_less_1_day': ev_less_1_day,})
 
 
 # ORGANIZER
@@ -235,7 +269,7 @@ def UpdateEvents(request, id):
         msg = organizer.user.first_name + ' ' + organizer.user.last_name + ' has updated an event. Title: ' + title
         notification = Notification.objects.create(message=msg, event=event, organizer=organizer)
         notification.save()
-        return redirect('ticket:profil')
+        return redirect('ticket:Event_List_organizer')
 
 
 def DeleteEvent(request, id):

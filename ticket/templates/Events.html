@@ -1,13 +1,12 @@
-{%extends "base.html" %}
+{% extends "base.html" %}
 {% load static %}
 
 {% block content %}
-
-
+{% include "carousel.html" %}
 <div class="container">
   
   
-	<div class="row">
+	<div class="row"style="display: flex; justify-content: center;padding-top:30px">
     
 
     
@@ -43,7 +42,7 @@
                         <a class="nav-link" id="one-tab" data-toggle="tab" href="#{{event.id}}" role="tab" aria-controls="One" aria-selected="true">Gold </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" id="two-tab" data-toggle="tab" href="#{{event.id}}+1" role="tab" aria-controls="Two" aria-selected="false">Selver</a>
+                        <a class="nav-link" id="two-tab" data-toggle="tab" href="#{{event.id}}+1" role="tab" aria-controls="Two" aria-selected="false">Silver</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" id="three-tab" data-toggle="tab" href="#{{event.id}}+2" role="tab" aria-controls="Three" aria-selected="false">Scopper</a>
@@ -89,6 +88,20 @@
 </div>
 </div>
 
+<div class="con">
+  <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
+
+    
+    
+
+    
+      <a class="navbar-brand" href="{% url 'ticket:event_list' %}" style=" padding-left: 20px;"><img src="{% static 'image/Logo3.png' %}" class="rounded-circle" alt="Default Image" width="180" height="65" style="padding-top:0;padding-bottom:-3px">
+      </a>
+    
+
+      <p class="col-md-4 mb-0 text-muted" style=" padding-left: 300px;">&copy; Django Project <b>2023/2024</b></p>
+  </footer>
+</div>
 
 
 {%endblock%}

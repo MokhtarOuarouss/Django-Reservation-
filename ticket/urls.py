@@ -33,8 +33,8 @@ urlpatterns = [
     path('Client/updateQuantity/<int:id>', views.updateQuantity, name='updateQuantity'),
     path('Client/Deletereservation/<int:id>', views.Deletereservation, name='Deletereservation'),
     path('Client/Cart', views.Cart, name='Cart'),
-    path('/Search', views.Search, name='Search'),
-    path('Search/<str:search>', views.SearchByCategory, name='SearchByCategory'),
+    path('Search/', views.Search, name='Search'),
+    path('Search/<str:search>/', views.SearchByCategory, name='SearchByCategory'),
 
 
     path('profil/', views.Profil, name='profil'),

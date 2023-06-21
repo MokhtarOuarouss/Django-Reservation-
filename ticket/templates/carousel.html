@@ -1,0 +1,20 @@
+
+
+<div id="carouselExampleControls" class="carousel slide" data-ride="carousel" style="padding: 20px; height: 500px;">
+  <div class="carousel-inner">
+    {% for event in ev_less_1_day %}
+    <div class="carousel-item {% if forloop.first %}active{% endif %}">
+      <a href="{% url 'ticket:EventrInfo' id=event.id %}"><img class="d-block w-100" src="{{ event.image.url }}" alt="{{ event.title }}" style=" width: 1300px; height: 500px;"></a>
+    </div>
+    {% endfor %}
+  </div>
+  <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="sr-only">Previous</span>
+  </a>
+  <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="sr-only">Next</span>
+  </a>
+</div>
+
