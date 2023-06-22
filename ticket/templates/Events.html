@@ -25,7 +25,7 @@
                         <a>{{ event.date }} | {{ event.time }}</a>
                     </div>
                     <div class="meta">
-                        <a>in <b>{{ event.location }}</b> </a>
+                        <a>in <b>{{ event.location|truncatechars:"20" }}</b> </a>
                     </div>
                     <div class="meta">
                       <div class="card-text"><a href="{% url 'ticket:EventrInfo' id=event.id %}">see more .... </a></div>
