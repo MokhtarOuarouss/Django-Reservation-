@@ -25,11 +25,13 @@ def Event_List(request):
     next_day = (datetime.now() + timedelta(days=1)).date()
     
     events = Event.objects.filter(is_valid=True, date__gte=current_date)
-    ev_less_1_day = events.filter(is_valid=True, date__lte=next_day,)
+    events = events.order_by('time')
+    nearest_events = events[:5]
+    #ev_less_1_day = events.filter(is_valid=True, date__lte=next_day,)
 
     context = {
         'Events': events,
-        'ev_less_1_day': ev_less_1_day,
+        'nearest_events': nearest_events,
     }
 
     return render(request, 'Events.html', context)

@@ -2,7 +2,7 @@
 
 <div id="carouselExampleControls" class="carousel slide" data-ride="carousel" style="padding: 20px; height: 500px;">
   <div class="carousel-inner">
-    {% for event in ev_less_1_day %}
+    {% for event in nearest_events %}
     <div class="carousel-item {% if forloop.first %}active{% endif %}">
       <a href="{% url 'ticket:EventrInfo' id=event.id %}"><img class="d-block w-100" src="{{ event.image.url }}" alt="{{ event.title }}" style=" width: 1300px; height: 500px;"></a>
     </div>
