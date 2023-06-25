@@ -51,10 +51,10 @@
                               <a>{{ event.date }} | {{ event.time }}</a>
                           </div>
                           <div class="meta">
-                              <a>in <b>{{ event.location }}</b> </a>
+                              <a>in <b>{{ event.location|truncatechars:"20" }}</b> </a>
                           </div>
                           <div class="meta">
-                            <div class="card-text"><a href="{% url 'ticket:EventrInfo' id=event.id %}">see more .... </a></div>
+                            <div class="card-text"><a href="{% url 'ticket:EventInfo_byAdmin' id=event.id %}">see more .... </a></div>
 
                         </div>
                       </div>
@@ -87,11 +87,19 @@
                             style="background-color: white">
                             <h5 class="card-title">{{ event.third_class_price }} DH</h5>
                         </div>
-                        <a id="validateBtn-{{ event.id }}" style="margin-left:20px" href="{% url 'ticket:EventValid' idk=event.id %}" class="btn btn-primary">validate</a>
-                        {% if event.is_valid %}
-                            <span class="status-checkbox" style="color:green">&#10004;</span>
+                        {% if event.status == 'ended' %}
+                        <p  style="margin-left:20px ;width:200px" href="" class="btn btn-danger" >ended</p>
                         {% else %}
-                            <span class="validate-wrapper" style="color:red">&#10006;</span>
+                        <a id="validateBtn-{{ event.id }}" style="margin-left:20px" href="{% url 'ticket:EventValid' idk=event.id %}" class="btn btn-primary">validate</a>
+                        <a id="validateBtn-{{ event.id }}" style="margin-left:5px" href="{% url 'ticket:Reject_Event' idk=event.id %}" class="btn btn-danger">Reject</a>
+                        {% if event.status == 'valid' %}
+                            <span class="status-checkbox" style="color:green;margin-left:20px;font-size: 20px;">&#10004;</span>
+                        {% elif event.status == 'not-valid'  %}
+                            <span class="validate-wrapper" style="color:red;">Not-valid</span>
+                        {% elif  event.status == 'Reject' %}
+                            <span class="validate-wrapper" style="color:red;margin-left:20px;font-size: 20px;">&#10006;</span>
+                        
+                        {% endif %}
                         {% endif %}
 
                     </div>

@@ -51,11 +51,12 @@ urlpatterns = [
 
     path('administrator', views.espace_admin, name='administrateur'),
     path('administrator/events/', views.admin_event, name='AdminEvent'),
-    path('administrator/events/validation/event/<int:idk>/', views.Valider_Event, name='EventValid'),
+    path('administrator/events/validation/event/<int:idk>/', views.Validation_Event, name='EventValid'),
+    path('administrator/events/Reject/event/<int:idk>/', views.Reject_Event, name='Reject_Event'),
     path('administrator/Clients/', views.client_admin, name='AdminClient'),
     path('administrator/Organizers/', views.Organizer_admin, name='AdminOrganizer'),
     path('administrator/Notification/New/', views.read_notification, name='Notifications'),
-    path('administrator/Notification/<int:pk>/delete/', views.delete_notification, name='delete_notification'),
+    path('administrator/Notification/delete/<int:pk>', views.delete_notification, name='delete_notification'),
     path('administrator/EventrInfo/<int:id>', views.EventInfo_byAdmin, name='EventInfo_byAdmin'),
 
 ]

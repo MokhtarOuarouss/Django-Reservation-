@@ -26,7 +26,7 @@
                   <a>{{ event.date }} | {{ event.time }}</a>
               </div>
               <div class="meta">
-                  <a>in <b>{{ event.location }}</b> </a>
+                  <a>in <b>{{ event.location|truncatechars:"20" }}</b> </a>
               </div>
               <div class="meta">
                 <div class="card-text"><a href="{% url 'ticket:EventrInfo' id=event.id %}">see more .... </a></div>
@@ -72,7 +72,7 @@
         <h3 class="modal-title fs-5">Edit Event</h3>
       </div>
       <div class="modal-body">
-        <form method="POST" action="UpdateEvents/{{event.id}}" enctype="multipart/form-data" class=" needs-validation"  novalidate>
+        <form method="POST"  action="{% url 'ticket:UpdateEvents' id=event.id %}" enctype="multipart/form-data" class=" needs-validation"  novalidate>
           {% csrf_token %}
           <div class="mb-3">
             <label for="title" class="col-form-label">Title:</label>

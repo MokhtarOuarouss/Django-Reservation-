@@ -130,11 +130,15 @@
                               <label>{{event.location}}</label>
                           </div>
                           <div class="col">
-                            {% if  event.is_valid %}
-                              <p  style="color: green;" >Valid</p>
-                            {% else %}
-                              <p  style="color: #fb1313;">Not Yet</p>
-                            {% endif %}
+                            {% if event.status == 'valid' %}
+                                    <span class="status-checkbox" style="color:green">&#10004; Valid</span>
+                                {% elif event.status == 'not-valid'  %}
+                                     <span class="validate-wrapper" style="color:red">&#10006; Non Valid</span>
+                                {% elif event.status == 'Reject'  %}
+                                    <span class="validate-wrapper" style="color:red">&#10006; Reject</span>
+                                {% elif event.status == 'ended'  %}
+                                    <span class="validate-wrapper" style="color:red">&#10006; Ended</span>
+                                {% endif %}
                           </div>
                           
                       </div>

@@ -6,7 +6,7 @@ from django.contrib.auth import authenticate, login, logout, get_user_model
 from .models import *
 from django.core.paginator import Paginator
 from datetime import datetime, timedelta
-
+from django.db.models import Case, When, Value
 
 # Create your views here.
 def index(request):
@@ -19,15 +19,18 @@ def index(request):
 def Event_List(request):
     current_date = datetime.now().date()
     current_time = datetime.now().time()
-    
 
-    # Calculate the time after 24 hours
-    next_day = (datetime.now() + timedelta(days=1)).date()
     
-    events = Event.objects.filter(is_valid=True, date__gte=current_date)
-    events = events.order_by('time')
+    Even = Event.objects.all()
+    events = Event.objects.filter(status='valid', date__gte=current_date)
+    events = events.order_by('date')
+
+    for event in Even:
+        if event.date < current_date:
+            event.status = 'ended'
+            event.save()
+
     nearest_events = events[:5]
-    #ev_less_1_day = events.filter(is_valid=True, date__lte=next_day,)
 
     context = {
         'Events': events,
@@ -42,7 +45,7 @@ def Search(request):
     query = request.GET.get('search')  # Get the search query from the request
 
     if query:
-        results = Event.objects.filter(Q(title__icontains=query) | Q(city__icontains=query), is_valid=True)
+        results = Event.objects.filter(Q(title__icontains=query) | Q(city__icontains=query), status='valid')
         # Perform the search using the 'icontains' lookup
     else:
         results = Event.objects.none()  # Empty queryset when no search query is provided
@@ -52,26 +55,29 @@ def Search(request):
     # Calculate the time after 24 hours
     next_day = (datetime.now() + timedelta(days=1)).date()
 
-    events = Event.objects.filter(is_valid=True, date__gte=current_date)
-    ev_less_1_day = events.filter(is_valid=True, date__lte=next_day,)
+    events = Event.objects.filter(status='valid', date__gte=current_date)
+    events = events.order_by('date')
+    nearest_events = events[:5]
+
 
     
-    return render(request, 'Events.html', {'Events': results, 'query': query, 'ev_less_1_day': ev_less_1_day})
+    return render(request, 'Events.html', {'Events': results, 'query': query,'nearest_events':nearest_events})
 
 def SearchByCategory(request,search):  # Get the search query from the request
 
 
-    results = Event.objects.filter(Q(type=search) , is_valid=True)
+    results = Event.objects.filter(Q(type=search) , status='valid')
         # Perform the search using the 'icontains' lookup
     current_date = datetime.now().date()
     # Calculate the time after 24 hours
     next_day = (datetime.now() + timedelta(days=1)).date()
 
-    events = Event.objects.filter(is_valid=True, date__gte=current_date)
-    ev_less_1_day = events.filter(is_valid=True, date__lte=next_day,)
+    events = Event.objects.filter(status='valid', date__gte=current_date)
+    nearest_events = events[:5]
+
 
     
-    return render(request, 'Events.html', {'Events': results,'ev_less_1_day': ev_less_1_day,})
+    return render(request, 'Events.html', {'Events': results, 'nearest_events':nearest_events})
 
 
 # ORGANIZER
@@ -259,6 +265,7 @@ def UpdateEvents(request, id):
         event.first_class_price = firstprice
         event.second_class_price = secondprice
         event.third_class_price = thirsprice
+        event.status = 'not-valid'
         if description :
             event.description = description
 
@@ -378,7 +385,7 @@ def Cart(request):
         reservation.sub_total = sub_total
         total += sub_total
 
-    context = {'Reservation': reservations, 'total': total}
+    context = {'Reservation': reservations, 'total': total,'client':client}
 
     return render(request, 'Clients/Cart.html', context)
 
@@ -446,21 +453,40 @@ def EventInfo_byAdmin(request, id):
 
 
 def admin_event(request):
-    event = Event.objects.all()
     notification_count = Notification.objects.filter(is_read=False).count()
+    event = Event.objects.order_by(
+        Case(
+            When(status='not-valid', then=Value(1)),
+            When(status='valid', then=Value(2)),
+            When(status='Reject', then=Value(3)),
+            When(status='ended', then=Value(4)),
+            default=Value(5),
+        )
+    )
 
     return render(request, 'Administrateur/Events.html', {'Events': event, 'count': notification_count})
 
 
-def Valider_Event(request, idk):
+def Validation_Event(request, idk):
     event = Event.objects.get(id=idk)
-    if event.is_valid:
-        messages.info(request, 'Event ' + event.title + ' already  valid ')
+    if event.status == 'valid':
+        messages.info(request, 'Event ' + event.title + ' is already valid')
     else:
-        event.is_valid = True
-        messages.info(request, 'Event ' + event.title + ' is valid successfully ')
-    event.save()
+        event.status = 'valid'
+        event.save()
+        messages.info(request, 'Event ' + event.title + ' has been validated successfully')
     return redirect('ticket:AdminEvent')
+
+def Reject_Event(request, idk):
+    event = Event.objects.get(id=idk)
+    if event.status == 'Reject':
+        messages.info(request, 'Event ' + event.title + ' is already rejected')
+    else:
+        event.status = 'Reject'
+        event.save()
+        messages.info(request, 'Event ' + event.title + ' has been rejected successfully.')
+    return redirect('ticket:AdminEvent')
+
 
 
 def client_admin(request):
@@ -482,12 +508,14 @@ def Organizer_admin(request):
 
 
 def read_notification(request):
-    notification = Notification.objects.all()
-    for notification in notification:
-        notification.is_read = True
-        notification.save()
-    notification = Notification.objects.all()
-    return render(request, 'Administrateur/Notification.html', {'notifications': notification})
+    notifications = Notification.objects.all()
+    for notif in notifications:
+        notif.is_read = True
+        notif.save()
+    notifications = Notification.objects.order_by('-date')
+    return render(request, 'Administrateur/Notification.html', {'notifications': notifications})
+
+
 
 
 def delete_notification(request, pk):

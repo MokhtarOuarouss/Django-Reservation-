@@ -62,6 +62,7 @@ class Event(models.Model):
     second_class_price = models.DecimalField(max_digits=8, decimal_places=2)
     third_class_price = models.DecimalField(max_digits=8, decimal_places=2)
     is_valid = models.BooleanField(default=False, null=True)
+    status =  models.CharField(max_length=100,default='not-valid', null=True, blank=True)
 
     objects = models.Manager()
 
@@ -77,12 +78,18 @@ class Reservation(models.Model):
 
     objects = models.Manager()
 
+class Order(models.Model):
+    client = models.ForeignKey(Client, on_delete=models.CASCADE, null=True)
+    reservations = models.ManyToManyField(Reservation)
+    
+    objects = models.Manager()
 
 class Notification(models.Model):
     event = models.ForeignKey(Event, on_delete=models.CASCADE, null=True, blank=True)
     organizer = models.ForeignKey(Organizer, on_delete=models.CASCADE, null=True, blank=True)
     message = models.TextField()
-    date = models.DateTimeField(auto_now=True)
+    date = models.DateTimeField(auto_now_add=True)
     is_read = models.BooleanField(default=False)
 
     objects = models.Manager()
+

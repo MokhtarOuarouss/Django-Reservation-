@@ -26,11 +26,18 @@
                         </div>
                     </div>
                     <div>
+                    {% if event.status != 'ended' %}
                     <form method="POST" action="{% url 'ticket:EventValid' idk=event.id %}" >
                         {% csrf_token %}
                         <button type="submit" class="btn btn-success" style="width:100%;height:100%;margin-bottom:-16;">Validate</button>
                         
                     </form>
+                    <form method="POST" action="{% url 'ticket:Reject_Event' idk=event.id %}" >
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-danger" style="width:100%;height:100%;margin-bottom:-16;">Reject</button>
+                        
+                    </form>
+                    {% endif %}
                 </div>
 
                 </div>
@@ -44,10 +51,14 @@
                                 <h6 class="mb-0">Status</h6>
                             </div>
                             <div class="col-sm-9 text-secondary">
-                                {% if event.is_valid %}
+                                {% if event.status == 'valid' %}
                                     <span class="status-checkbox" style="color:green">&#10004; Valid</span>
-                                {% else %}
+                                {% elif event.status == 'not-valid'  %}
                                      <span class="validate-wrapper" style="color:red">&#10006; Non Valid</span>
+                                {% elif event.status == 'Reject'  %}
+                                    <span class="validate-wrapper" style="color:red">&#10006; Reject</span>
+                                {% elif event.status == 'ended'  %}
+                                    <span class="validate-wrapper" style="color:red">&#10006; Ended</span>
                                 {% endif %}
                             </div>
                         </div>
